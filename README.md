@@ -35,7 +35,9 @@ To sucessfully run every lab the following images should be present:
 
 Many of the images are built with [vrnetlab](https://containerlab.dev/manual/vrnetlab/), a tool to build container images that internally run qemu VMs of network appliances.  This allows us to deploy VM-based network devices, such as Juniper vMX and vQFX, from docker/containerlab.
 
-Specific images can be aliased to the required names with something like `docker tag vrnetlab/vr-vmx:21.2R1.10 vrnetlab/vr-vmx:latest`
+Specific images can be aliased to the required names with something like
+    
+    docker tag vrnetlab/vr-vmx:21.2R1.10 vrnetlab/vr-vmx:latest
 
 ### Scripts
 
