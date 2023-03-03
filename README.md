@@ -5,7 +5,7 @@ Networking labs based on containerlab, using Homer for configuration
 
 This repo contains various virtual networking labs, defined in [containerlab](https://containerlab.srlinux.dev/) topology files and  [homer](https://doc.wikimedia.org/homer/master/introduction.html) device data/template folders.
 
-The files for each lab are saved in a different folder in this repo.  Users can change to that directory, instantiate the virtual devices with 'clab deploy', and then configure them with homer.
+The files for each lab are saved in a different folder in this repo.  Users can change to that directory, instantiate the virtual devices with 'clab deploy', then configure them with homer.
 
 ## Labs
 
@@ -37,9 +37,13 @@ Most of the labs depend on images that can be built with [vrnetlab](https://cont
 
 Specific images can be aliased to the required names with something like `docker tag vrnetlab/vr-vmx:21.2R1.10 vrnetlab/vr-vmx:latest`
 
+### Scripts
+
+Helper scripts are included with some of the labs to run after node deployment.  These are most used to add the minimum config allowing us to connect using homer.
+
 ### Resources
 
-Many of the labs are resource-heavy, given the number of VMs in total that are spun up.
+Many of the labs are resource-heavy, given the number of VMs in total that are spun up.  Depeneding on the lab up to 64GB of RAM may be needed.  
 
 ### Installation
 
