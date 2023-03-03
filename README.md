@@ -23,9 +23,9 @@ Containerlab is a framework which allows us to spin up virtual network topologie
 
 ### Images
 
-To instantiate a lab we need the clab topology file, as well as a working docker subsystem on the local host, with the correct container images available.
+To instantiate a lab we need the clab topology file, as well as a working docker subsystem on the local host.  The container images references in the clab file need to be available on the local host.
 
-The following docker images are required to run all the labs:
+To sucessfully run every lab the following images should be present:
 
 |Docker repo name|Docker tag|Description|VM Based|
 |----------------|----------|-----------|--------|
@@ -33,13 +33,13 @@ The following docker images are required to run all the labs:
 |vrnetlab/vr-vqfx| latest   | Juniper vQFX image built with vrnetlab |:heavy_check_mark:|
 |debian|clab | Debian Linux container to simulate servers | |
 
-Most of the labs depend on images that can be built with [vrnetlab](https://containerlab.dev/manual/vrnetlab/).  VRnetlab builds container images that internally run qemu VMs when they start, allowing us to deploy VM-based network devices, such as Juniper vMX and vQFX, from docker/containerlab.
+Many of the images are built with [vrnetlab](https://containerlab.dev/manual/vrnetlab/).  VRnetlab builds container images that internally run qemu VMs, which allows us to deploy VM-based network devices, such as Juniper vMX and vQFX, with docker/containerlab.
 
 Specific images can be aliased to the required names with something like `docker tag vrnetlab/vr-vmx:21.2R1.10 vrnetlab/vr-vmx:latest`
 
 ### Scripts
 
-Helper scripts are included with some of the labs to run after node deployment.  These are most used to add the minimum config allowing us to connect using homer.
+Helper scripts are included with some of the labs.  These are designed to be run after deploying the virtual nodes, and add what we need to sucessfully configure them from homer.
 
 ### Resources
 
@@ -48,4 +48,3 @@ Many of the labs are resource-heavy, given the number of VMs in total that are s
 ### Installation
 
 To get your system set up to run the labs see [Getting Started](getting_started.md).
-
