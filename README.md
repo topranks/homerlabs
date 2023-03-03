@@ -23,7 +23,7 @@ Containerlab is a framework which allows us to spin up virtual network topologie
 
 ### Images
 
-To instantiate a lab we need the clab topology file, as well as a working docker subsystem on the local host.  The container images references in the clab file need to be available on the local host.
+To instantiate a lab we need the clab topology file, as well as a working docker subsystem on the local host.  The container images referenced in the clab file should be available on the local host.
 
 To sucessfully run every lab the following images should be present:
 
