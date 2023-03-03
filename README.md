@@ -19,7 +19,7 @@ The following labs are currently available.
 
 ## How it works
 
-Containerlab is a framework which allows us to spin up virtual network topologies with docker containers.  A YAML file is used to defined the various nodes to deploy, and the links between them.
+Containerlab is a framework which allows us to spin up virtual network topologies with docker containers.  A YAML file is used to define the various nodes to deploy, and the links between them.
 
 ### Images
 
