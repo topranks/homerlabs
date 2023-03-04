@@ -23,9 +23,9 @@ Containerlab is a framework which allows us to spin up virtual network topologie
 
 ### Images
 
-To instantiate a lab we need the clab topology file, as well as a working docker subsystem on the local host.  The container images referenced in the clab file should be available, and show up running `sudo docker images`.
+To instantiate a lab we need the clab topology file, as well as a working docker subsystem on the local host.  Container images referenced in the clab file should be available locally, and show up in `sudo docker images` on the command line.
 
-To sucessfully run every lab the following images should be present:
+To sucessfully run all the labs the following images are required:
 
 |Docker repo name|Docker tag|Description|VM Based|
 |----------------|----------|-----------|--------|
