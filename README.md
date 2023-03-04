@@ -41,11 +41,11 @@ Specific images can be aliased to the required names with something like
 
 ### Scripts
 
-Helper scripts are included with some of the labs.  These are designed to be run after deploying the virtual nodes, and add what we need to sucessfully configure them from homer.
+Helper scripts are included with some of the labs.  These are designed to be run after deploying the virtual nodes, and add what the minimum config required to connect to them with homer.
 
 ### Resources
 
-Many of the labs are resource-heavy, given the number of VMs in total that are spun up.  Depeneding on the lab up to 64GB of RAM may be needed.  
+VM-based labs are resource-heavy, given the number of VMs in total that are spun up.  Depeneding on the lab up to 64GB of RAM may be needed.  
 
 ### Installation
 
