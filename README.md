@@ -39,6 +39,18 @@ Many of the images are built with [vrnetlab](https://containerlab.dev/manual/vrn
 
 Helper scripts are included with some of the labs.  These are designed to be run after deploying the virtual nodes, and add what the minimum config required to connect to them with homer.
 
+### Folders
+
+Each of the directories under 'labs' typically contain the following:
+
+|Name|Description|
+|----|-----------|
+|Containerlab topology file|YAML file to instantiate the lab with `clab deploy -t`|
+|homer_public sub-directory|Root 'public' directory for homer, containing 'config' and 'templates' directories.  Homer's config.yaml should point to this to configure the nodes in a given lab.|
+|README|Documentation on the specific lab, notes, instructions etc.|
+|saved_configs|Dumped configuration files from fully configured lab nodes for reference.|
+
+
 ### Resources
 
 VM-based labs are resource-heavy, given the number of VMs in total that are spun up.  Depeneding on the lab up to 64GB of RAM may be needed.  
