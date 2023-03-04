@@ -37,7 +37,7 @@ Many of the images are built with [vrnetlab](https://containerlab.dev/manual/vrn
 
 ### Scripts
 
-Helper scripts are included with some of the labs.  These are designed to be run after deploying the virtual nodes, and add what the minimum config required to connect to them with homer.
+Helper scripts are included with some of the labs.  These are designed to be run after deploying the virtual nodes, and add the minimum config required to connect to them with homer.
 
 ### Folders
 
