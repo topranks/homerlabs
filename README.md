@@ -3,7 +3,7 @@ Virtual networking labs built with containerlab, configured with homer.
 
 ## Overview
 
-This repo contains various virtual networking labs, defined in [containerlab](https://containerlab.srlinux.dev/) topology files and  [homer](https://doc.wikimedia.org/homer/master/introduction.html) device data/template folders.
+This repo contains various virtual networking labs, defined as [containerlab](https://containerlab.srlinux.dev/) topology files and  [homer](https://doc.wikimedia.org/homer/master/introduction.html) device data/template folders.
 
 The files for each lab are saved in a different folder in this repo.  Users can change to that directory, instantiate the virtual devices with 'clab deploy', then configure them with homer.
 
