@@ -37,7 +37,15 @@ Many of the images are built with [vrnetlab](https://containerlab.dev/manual/vrn
 
 ### Scripts
 
-Helper scripts are included with some of the labs.  These are designed to be run after deploying the virtual nodes, and add the minimum config required to connect to them with homer.
+Helper scripts are included to ease running the labs.
+
+|Name|Description|
+|----|-----------|
+|add_fqdn_hosts.py|Adds entries in /etc/hosts for all lab nodes, stripping the clab prefix so we can use short names (like 'leaf1') to connect.|
+|add_junos_user.py|Adds a new JunOS user to all discovered vQFX/vMX nodes, with a SSH public key for authentication.  Once run it lab nodes should be usable with homer.|
+|save_junos_configs.py|Saves JunOS configurations from discovered lab nodes.|
+
+Individual labs may also include specific helper-scripts, for instance to configure Linux networking in containers where required.
 
 ### Folders
 
