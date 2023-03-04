@@ -1,5 +1,5 @@
 # homerlabs
-Networking labs based on containerlab, using Homer for configuration
+Virtual networking labs built with containerlab, configured with homer.
 
 ## Overview
 
