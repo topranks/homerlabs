@@ -4,7 +4,11 @@
 
 This is a containerlab topology based on my previous [evpnlab](../evpnlab), but with two vMX devices added to simulate core/border routers.
 
-Running the lab is similar to evpnlab so no need to go into detail here:
+
+#### TODO
+
+Core router config is very basic.  Need to add unicast BGP peerings to the Spine layer, IBGP between them etc.
+
 
 #### Running the lab
 
