@@ -293,7 +293,7 @@ Configuration diff for LEAF1:
 [edit interfaces]
 -   et-0/0/0 {
 
-<--- OUTPUT CUT --->
+<--------- OUTPUT CUT --------->
 
 Type "yes" to commit, "no" to abort.
 > yes
