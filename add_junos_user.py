@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 
-import pynetbox
-
 from jnpr.junos import Device
 from jnpr.junos.utils.config import Config
 from jnpr.junos.exception import ConnectError
@@ -10,12 +8,6 @@ from jnpr.junos.utils.start_shell import StartShell
 import argparse
 import os
 import subprocess
-import sys
-import re
-
-from pathlib import Path
-import json
-import yaml
 
 import warnings
 warnings.filterwarnings(action='ignore',module='.*paramiko.*')
@@ -29,16 +21,20 @@ from time import sleep
 from pprintpp import pprint as pp
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-s', '--sshconfig', help='SSH config file', default='~/.ssh/config')
-parser.add_argument('-u', '--user', help='User to add to devices', default='cathal')
-parser.add_argument('-k', '--key', help='SSH pubkey for user', default='ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH8GQKaT22CZdxJcpLNsq1LYm9bTeI7xnblYrrx8HXQH cathal@officepc')
+parser.add_argument('-u', '--user', help='User to add to devices', default='homer')
+parser.add_argument('-p', '--pubkey', help='Path to SSH public key', default='~/.ssh/homerlabs_ed25519.pub')
+parser.add_argument('-s', '--sshconf', help='Path to SSH config file to use when connecting', default='~/.ssh/config_homer')
 args = parser.parse_args()
 
 def main():
     """ Adds a user with SSH key to vqfx devices found by running clab inspect """
+
+    with open(args.pubkey, 'r') as keyfile:
+        pubkey = keyfile.readline().rstrip('\n')
+
     devices = get_clab_juniper()
     for device_name, dev_vars in devices.items():
-        add_user_config(device_name, dev_vars)
+        add_user_config(device_name, dev_vars, pubkey)
 
 
 def get_clab_juniper():
@@ -62,7 +58,7 @@ def get_clab_juniper():
     return devices
 
 
-def add_user_config(dev_name, dev_vars):
+def add_user_config(dev_name, dev_vars, pubkey):
     """ Adds configured user and ssh key using CLI to allow key-based SSH for Homer """
 
     print(f"Trying to conenct to {dev_name} at {dev_vars['ip']}... ", end="", flush=True)
@@ -84,8 +80,8 @@ def add_user_config(dev_name, dev_vars):
     getprompt(lines)
     ret_val, lines = ss.run(f"set system login user {args.user} class super-user")
     getprompt(lines)
-    ssh_key_type = args.key.split()[0]
-    ret_val, lines = ss.run(f"set system login user {args.user} authentication {ssh_key_type} \"{args.key}\"")
+    ssh_key_type = pubkey.split()[0]
+    ret_val, lines = ss.run(f"set system login user {args.user} authentication {ssh_key_type} \"{pubkey}\"")
     getprompt(lines)
     ret_val, lines = ss.run("commit")
     getprompt(lines)
