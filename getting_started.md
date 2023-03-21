@@ -151,6 +151,7 @@ Create a new file at `~/.ssh/config_homer` with your favourite editor, for insta
 Now add the following contents:
 ```
 Host *
+    User homer
     IdentityFile ~/.ssh/homerlabs_ed25519
 ```
 
