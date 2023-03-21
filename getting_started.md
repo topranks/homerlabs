@@ -1,12 +1,10 @@
 # Getting Started
 
-## Notes
+#### Notes
 
-The lab is designed to be run on Linux.  As it uses virtual machines to emualte the Juniper devices it is better running directly on bare metal, however it should in theory work in a VM; as long as nested virtualization is enabled.
+The lab is designed to be run on Linux.  Some of the Juniper virtual devices run as QEMU virtual machines, so it is better to run on bare metal.  It should in theory work in a VM, however, if nested virtualization is enabled.
 
-### Part 1: Install containerlab, docker and the required container images.
-
-This section details what is required to get a working docker subsystem with the right images installed to instantiate any of the labs.
+### Steps
 
 #### 1. Install Docker
 
