@@ -113,7 +113,7 @@ Ansible isn't used directly in this project, however the Ansible-provided 'ipadd
 
 TODO: Create fork of Homer which includes the ipaddr module
 
-For now you'll need to change Homer to import the ipaddr module and make it usable in templates.  To do so locate the "tempaltes.py" Homer file on your system and add this under at the top just under the line `import jinja2`:
+For now you'll need to change Homer to import the ipaddr module and make it usable in templates.  To do so locate the "tempaltes.py" Homer file on your system and add this at the top just under the line `import jinja2`:
 
 ```python
 from ansible_collections.ansible.utils.plugins.filter import ipaddr
