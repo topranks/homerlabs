@@ -20,7 +20,7 @@ To run vQFX in containerlab we need to wrap the VM execution in a container that
 
 [Juniper vQFX and Containerlab Tutorial](https://www.theasciiconstruct.com/post/junos-vqfx-containerlab/)
 
-The vQFX image should be alias'ed to vrnetlab/vr-vqfx:latest, as that is what the clab topology files will reference.  For example:
+Once built, the vQFX image should be tagged as vrnetlab/vr-vqfx:latest, which is what the clab topology files reference.  For example:
 
     sudo docker tag vrnetlab/vr-vqfx:20.2R1.10 vrnetlab/vr-vqfx:latest
 
