@@ -91,7 +91,7 @@ crpd                           latest          5b6acdd96efb   3 years ago    320
 &nbsp;  
 #### 7. Install containerlab
 
-Follow the instructions to [install containerlab](https://containerlab.dev/install/)
+Follow the instructions to [install containerlab](https://containerlab.dev/install/).
 
 &nbsp;
 #### 8. Clone this repo
