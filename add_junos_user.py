@@ -61,7 +61,7 @@ def get_clab_juniper():
 def add_user_config(dev_name, dev_vars, pubkey):
     """ Adds configured user and ssh key using CLI to allow key-based SSH for Homer """
 
-    print(f"Trying to conenct to {dev_name} at {dev_vars['ip']}... ", end="", flush=True)
+    print(f"Trying to connect to {dev_name} at {dev_vars['ip']}... ", end="", flush=True)
     if dev_vars['kind'] == "vr-vqfx":
         device = Device(host=f"{dev_vars['ip']}", port=22, user="root", password="Juniper")
     else:
