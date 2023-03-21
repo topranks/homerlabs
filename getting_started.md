@@ -4,14 +4,15 @@
 
 The lab is designed to be run on Linux.  Some of the Juniper virtual devices run as QEMU virtual machines, so it is better to run on bare metal.  In theory, if nested virtualization is enabled, it should work in a VM, but I've not tested it.
 
+&nbsp;
 ### Steps
 
 #### 1. Install Docker
 
 Installer docker using [their instructions](https://docs.docker.com/engine/install/).
 
-&nbsp;  
-#### 2. Create docker container image that runs the vQFX VMs
+&nbsp;
+#### 2. Create docker container image for vQFX:
 
 Firstly you'll need to have Juniper's [vQFX](https://www.juniper.net/us/en/dm/free-vqfx10000-software.html) images downloaded.  The vQFX runs as two separate virtual machines, one which takes care of packet forwarding (PFE) and one that manages the device's control plane (vCP).
 
@@ -23,8 +24,8 @@ The vQFX image should be alias'ed to vrnetlab/vr-vqfx:latest, as that is what th
 
     sudo docker tag vrnetlab/vr-vqfx:20.2R1.10 vrnetlab/vr-vqfx:latest
 
-&nbsp;  
-#### 3. Create docker container image that runs the vMX VMs
+&nbsp;
+#### 3. Create docker container image for vMX:
 
 Assuming one already has requried Juniper [vMX](https://www.juniper.net/us/en/products/routers/mx-series/vmx-virtual-router-software.html) images we folow a similar process to above to create a vMX container image with vrnetlab.
 
@@ -37,7 +38,7 @@ The vMX image should be tagged as 'vrnetlab/vr-vmx:latest', for example:
     sudo docker tag vrnetlab/vr-vmx:21.2R1.10 vrnetlab/vr-vmx:latest
 
 &nbsp;  
-#### 4. Create docker container to simulate connected servers
+#### 4. Create docker container image to simulate end hosts
 
 To simulate generic Linux servers we use a standard Linux container.  Any kind of Linux container will work, I typically use "debian:stable-slim".  
 
@@ -79,20 +80,20 @@ Then alias the newly-added image as `crpd:latest`:
 If you've followed the steps you should now have several docker images on the local system, run 'docker images' to verify everything looks ok.
 
 You'll have several more than shown below, but all 4 should be present with the same 'repository' and 'tag' so the names used in the lab YAML topologies will work:
-
-    root@officepc:~# sudo docker images
-    REPOSITORY                     TAG             IMAGE ID       CREATED        SIZE
-    vrnetlab/vr-vmx                latest          e9a3a0781c03   2 weeks ago    4.32GB
-    vrnetlab/vr-vqfx               latest          c4402f8ebcbd   5 weeks ago    1.83GB
-    debian                         clab            1a8ce1b943bf   3 months ago   175MB
-    crpd                           latest          5b6acdd96efb   3 years ago    320MB
-
+```
+root@officepc:~# sudo docker images
+REPOSITORY                     TAG             IMAGE ID       CREATED        SIZE
+vrnetlab/vr-vmx                latest          e9a3a0781c03   2 weeks ago    4.32GB
+vrnetlab/vr-vqfx               latest          c4402f8ebcbd   5 weeks ago    1.83GB
+debian                         clab            1a8ce1b943bf   3 months ago   175MB
+crpd                           latest          5b6acdd96efb   3 years ago    320MB
+```
 &nbsp;  
 #### 7. Install containerlab
 
 Follow the instructions to [install containerlab](https://containerlab.dev/install/)
 
-&nbsp;  
+&nbsp;
 #### 8. Clone this repo
 
 Clone this repo to your machine, I normally do this in my home directory:
@@ -141,7 +142,7 @@ You can use a passphrase or not.  I usually don't because this is just used for 
 &nbsp;  
 #### 11. Create SSH config file to use with homer
 
-We need to provide homer with an [https://www.cyberciti.biz/faq/create-ssh-config-file-on-linux-unix/](ssh config) file to use when connecting to routers.
+We need to provide homer with an [ssh config file](https://www.cyberciti.biz/faq/create-ssh-config-file-on-linux-unix/) to use when connecting to lab devices.
 
 Create a new file at `~/.ssh/config_homer` with your favourite editor, for instance vim:
 
@@ -156,7 +157,7 @@ Host *
 &nbsp;  
 #### 12. Add homer configuration file
 
-You'll need to create a homer configuration file at **/etc/homer/config.yaml**, contents should be similar to below.  The two main items to pay attention to here are:
+You'll need to create a homer configuration file at **/etc/homer/config.yaml**.  The two main items to pay attention to here are:
 
 |Variable path|Description|
 |-------------|-----------|
@@ -164,6 +165,7 @@ You'll need to create a homer configuration file at **/etc/homer/config.yaml**, 
 |tansports/ssh_config|Path of the SSH config file created in the last step|
 |base_paths/public|This var needs to be changed when running different labs.  It needs to point at the appropriate 'homer_public' dir from this repo for the given lab.  This directory contains all the YAML config and Jinja templates to automate the config for a particular lab.  Path should be absolute, bash shortcuts like '~' for home directory don't work.|
 
+Your file should be similar to the below:
 ```yaml
 base_paths:
   # Path of Homer public repo files for given labs, for instance evpnlab path below:
@@ -238,6 +240,7 @@ removed '/etc/hosts'
 renamed '/tmp/new_hosts' -> '/etc/hosts'
 ```
 
+&nbsp;
 #### 15. Add local user to Junos with SSH public key
 
 Before it's possible to use homer to configure virutal Juniper devices we need to add a user to them matching what we configured in the homer config file above.
