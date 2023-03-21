@@ -27,12 +27,13 @@ Containerlab is a framework which allows us to spin up virtual network topologie
 
 To instantiate a lab we need the clab topology file, as well as a working docker subsystem on the local host.  Container images referenced in the clab file should be available locally, and show up when `docker images` is run.
 
-To sucessfully run all the labs the following images are required:
+To sucessfully run all the labs the following images are required, although for a given lab you may not need to have them all.
 
 |Docker repo name|Docker tag|Description|VM Based|
 |----------------|----------|-----------|--------|
 |vrnetlab/vr-vmx | latest   | Juniper vMX image built with vrnetlab |:heavy_check_mark:|
 |vrnetlab/vr-vqfx| latest   | Juniper vQFX image built with vrnetlab |:heavy_check_mark:|
+|crpd| latest | Juniper cRPD containerized routing protocol daemon | |
 |debian|clab | Debian Linux container to simulate servers | |
 
 Many of the images are built with [vrnetlab](https://containerlab.dev/manual/vrnetlab/), a tool to build container images that internally run qemu VMs of network appliances.  This allows us to deploy VM-based network devices, such as Juniper vMX and vQFX, from docker/containerlab.
