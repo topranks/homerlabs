@@ -264,7 +264,7 @@ Adding user homer with CLI... done.
 
 NOTE: This takes a *long* time.  For some reason the Juniper [StartShell](https://www.juniper.net/documentation/us/en/software/junos-pyez/junos-pyez-developer/topics/task/junos-pyez-program-shell-accessing.html) takes ages to run on the vQFX, at least on my system.  But it works ok, I need to revisit to see why it goes so slow.
 
-When done you should be able to SSH into any of the Juniper devices using the username and ssh key generated earlier, and the short name used in the Homer config files:
+When done you should be able to SSH into any of the Juniper devices using their short name, and the username and ssh key generated earlier:
 ```
 cathal@officepc:~$ ssh -i ~/.ssh/homerlabs_ed25519 homer@leaf1 
 --- JUNOS 19.4R1.10 built 2019-12-19 03:54:05 UTC
