@@ -1,6 +1,8 @@
 # homerlabs
 Virtual networking labs built with containerlab, configured with homer.
 
+![example topolgy diagram](https://raw.githubusercontent.com/topranks/homerlab/main/diagram.png)
+
 ## Overview
 
 This repo contains various virtual networking labs, defined as [containerlab](https://containerlab.srlinux.dev/) topology files and  [homer](https://doc.wikimedia.org/homer/master/introduction.html) device data/template folders.
