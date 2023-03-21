@@ -157,7 +157,7 @@ Host *
 &nbsp;  
 #### 12. Add homer configuration file
 
-You'll need to create a homer configuration file at **/etc/homer/config.yaml**.  The two main items to pay attention to here are:
+You'll need to create a homer configuration file at **/etc/homer/config.yaml**.  The main items to pay attention to here are:
 
 |Variable path|Description|
 |-------------|-----------|
