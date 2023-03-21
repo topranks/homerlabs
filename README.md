@@ -15,7 +15,7 @@ The following labs are currently available.
 
 |Name|Description|
 |----|-----------|
-|[evpnlab](evpnlab/README.md)|Basic Clos with vQFX running EVPN/VXLAN|
+|[evpnlab](labs/evpnlab/README.md)|Basic Clos with vQFX running EVPN/VXLAN|
 |[eqiadlab](eqiadlab/README.md)|Same as evpnlab with two vMX added to represent core routers|
 |[esilab](esilab/READMET.md)|Same as eqiadlab but with automation for ESI-LAG off two leaf switches|
 
