@@ -1,0 +1,131 @@
+CORE1:
+  role: core
+  site: esilab
+  config:
+    ip_ints:
+      "ge-0/0/0":
+        descr: "CORE2 ge-0/0/1"
+        ipv4: "198.18.11.0/31"
+      "ge-0/0/1":
+        descr: "SPINE1 xe-0/0/3"
+        subints:
+          100:
+            descr: "SPINE1 WMF_PROD VRF"
+            ipv4: "100.64.100.0/31"
+
+CORE2:
+  role: core
+  site: esilab
+  config:
+    ip_ints:
+      "ge-0/0/0":
+        descr: "CORE1 ge-0/0/1"
+        ipv4: "198.18.11.1/31"
+      "ge-0/0/1":
+        descr: "SPINE2 xe-0/0/3"
+        subints:
+          100:
+            descr: "SPINE2 WMF_PROD VRF"
+            ipv4: "100.64.100.2/31"
+
+SPINE1:
+  role: spine
+  site: esilab
+  config:
+    ip_ints:
+      "xe-0/0/3":
+        descr: "CORE1 ge-0/0/1"
+        subints:
+          100:
+            ipv4: "100.64.100.1/31"
+
+SPINE2:
+  role: spine
+  site: esilab
+  config:
+    ip_ints:
+      "xe-0/0/3":
+        descr: "CORE2 ge-0/0/1"
+        subints:
+          100:
+            ipv4: "100.64.100.3/31"
+
+LEAF1:
+  role: leaf
+  site: esilab
+  config:
+    lags:
+      "ae0":
+        ports:
+          xe-0/0/2: "SERVER1 xe-0/0/0"
+        sys_id: "01:02:00:00:00:01"
+    vlan_ports:
+      access:
+        "ae0":
+          descr: "SERVER1 ae0"
+          vlan: VLAN100
+        "xe-0/0/3":
+          descr: "SERVER2 eth1"
+          vlan: VLAN100
+    vlan_ints:
+      VLAN100:
+        ipv4: "198.18.100.1/24"
+        ipv6: "2001:0470:6a7f:0100::1/64"
+      
+LEAF2:
+  role: leaf
+  site: esilab
+  config:
+    lags:
+      "ae0":
+        ports:
+          xe-0/0/2: "SERVER1 xe-0/0/1"
+        sys_id: "01:02:00:00:00:01"
+    vlan_ports:
+      access:
+        "ae0":
+          descr: "SERVER1 ae0"
+          vlan: VLAN100
+        "xe-0/0/3":
+          descr: "SERVER3 eth1"
+          vlan: VLAN100
+    vlan_ints:
+      VLAN100:
+        ipv4: "198.18.100.2/24"
+        ipv6: "2001:0470:6a7f:0100::2/64"
+
+LEAF3:
+  role: leaf
+  site: esilab
+  config:
+    vlan_ports:
+      access:
+        "xe-0/0/2":
+          descr: "SERVER4 eth1"
+          vlan: VLAN200
+        "xe-0/0/3":
+          descr: "SERVER5 eth1"
+          vlan: VLAN100
+    vlan_ints:
+      VLAN100:
+        ipv4: "198.18.100.3/24"
+        ipv6: "2001:0470:6a7f:0100::2/64"
+      VLAN200:
+        ipv4: "198.18.200.254/24"
+        ipv6: "2001:0470:6a7f:0200::254/64"
+    
+    
+SERVER1:
+  role: basicsw
+  site: esilab
+  config:
+    lags:
+      "ae0":
+        ports:
+          xe-0/0/0: "LEAF1 xe-0/0/2"
+          xe-0/0/1: "LEAF2 xe-0/0/2"
+    ip_ints:
+      "ae0":
+        descr: "LAG to LEAF1 and LEAF2"
+        ipv4: "198.18.100.101/24"
+

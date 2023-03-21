@@ -1,0 +1,75 @@
+name: esilab
+mgmt:
+  network: esilab
+  bridge: clab
+topology:
+  nodes:
+    core1:
+      kind: vr-vmx
+      image: vrnetlab/vr-vmx:21.2R1.10
+    core2:
+      kind: vr-vmx
+      image: vrnetlab/vr-vmx:21.2R1.10
+    leaf1:
+      kind: vr-vqfx
+      image: vrnetlab/vr-vqfx:20.2R1.10
+    leaf2:
+      kind: vr-vqfx
+      image: vrnetlab/vr-vqfx:20.2R1.10
+    leaf3:
+      kind: vr-vqfx
+      image: vrnetlab/vr-vqfx:20.2R1.10
+    spine1:
+      kind: vr-vqfx
+      image: vrnetlab/vr-vqfx:20.2R1.10
+    spine2:
+      kind: vr-vqfx
+      image: vrnetlab/vr-vqfx:20.2R1.10
+
+    # Server1 is actually a vQFX so we can do a LAG easily rather than in Linux container
+    server1:
+      kind: vr-vqfx
+      image: vrnetlab/vr-vqfx:20.2R1.10
+    # Remaining servers are lightweight containers as they just have simple access port
+    server2:
+      image: debian:clab
+      kind: linux
+    server3:
+      image: debian:clab
+      kind: linux
+    server4:
+      image: debian:clab
+      kind: linux
+    server5:
+      image: debian:clab
+      kind: linux
+
+  links:
+    # core - core
+    - endpoints: ['core1:eth1', 'core2:eth1']
+
+    # core - spine
+    - endpoints: ['core1:eth2', 'spine1:eth4']
+    - endpoints: ['core2:eth2', 'spine2:eth4']
+
+    # spine1 - leaf
+    - endpoints: ["spine1:eth1", "leaf1:eth1"]
+    - endpoints: ["spine1:eth2", "leaf2:eth1"]
+    - endpoints: ["spine1:eth3", "leaf3:eth1"]
+
+    # spine2 - leaf
+    - endpoints: ["spine2:eth1", "leaf1:eth2"]
+    - endpoints: ["spine2:eth2", "leaf2:eth2"]
+    - endpoints: ["spine2:eth3", "leaf3:eth2"]
+
+    # Server1 LAG to LEAF1 / LEAF2 (ESI LAG)
+    - endpoints: ["server1:eth1", "leaf1:eth3"]
+    - endpoints: ["server1:eth2", "leaf2:eth3"]
+
+    # Remaining server connections
+    - endpoints: ["server2:eth1", "leaf1:eth4"]
+    - endpoints: ["server3:eth1", "leaf2:eth4"]
+    - endpoints: ["server4:eth1", "leaf3:eth3"]
+    - endpoints: ["server5:eth1", "leaf3:eth4"]
+
+
