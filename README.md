@@ -27,12 +27,13 @@ Containerlab is a framework which allows us to spin up virtual network topologie
 
 To instantiate a lab we need the clab topology file, as well as a working docker subsystem on the local host.  Container images referenced in the clab file should be available locally, and show up when `docker images` is run.
 
-To sucessfully run all the labs the following images are required:
+To sucessfully run all the labs the following images are required, although for a given lab you may not need to have them all.
 
 |Docker repo name|Docker tag|Description|VM Based|
 |----------------|----------|-----------|--------|
 |vrnetlab/vr-vmx | latest   | Juniper vMX image built with vrnetlab |:heavy_check_mark:|
 |vrnetlab/vr-vqfx| latest   | Juniper vQFX image built with vrnetlab |:heavy_check_mark:|
+|crpd| latest | Juniper cRPD containerized routing protocol daemon | |
 |debian|clab | Debian Linux container to simulate servers | |
 
 Many of the images are built with [vrnetlab](https://containerlab.dev/manual/vrnetlab/), a tool to build container images that internally run qemu VMs of network appliances.  This allows us to deploy VM-based network devices, such as Juniper vMX and vQFX, from docker/containerlab.
@@ -44,8 +45,8 @@ Helper scripts are included to ease running the labs.
 |Name|Description|
 |----|-----------|
 |add_fqdn_hosts.py|Adds entries in /etc/hosts for all lab nodes, stripping the clab prefix so we can use short names (like 'leaf1') to connect.|
-|add_junos_user.py|Adds a new JunOS user to all discovered vQFX/vMX nodes, with a SSH public key for authentication.  Once run it lab nodes should be usable with homer.|
-|save_junos_configs.py|Saves JunOS configurations from discovered lab nodes.|
+|add_junos_user.py|Adds a new JunOS user to all discovered vQFX/vMX nodes, with a SSH public key for authentication.  Run after deploying a lab to allow homer to connect and add the remaining config.|
+|save_junos_configs.py|Saves JunOS configurations from discovered lab nodes.  Creates an sub-directory called 'saved_configs' in the location it is run, so best to run in the directory for a specific lab (i.e. ~/homerlabs/labs/evpnlab/).|
 
 Individual labs may also include specific helper-scripts, for instance to configure Linux networking in containers where required.
 
@@ -57,7 +58,7 @@ Each of the directories under 'labs' typically contain the following:
 |----|-----------|
 |README|Documentation on the specific lab, notes, instructions etc.|
 |Containerlab topology file|YAML file to instantiate the lab with `clab deploy -t`|
-|homer_public sub-directory|Root 'public' directory for homer, containing 'config' and 'templates' directories.  Homer's config.yaml should point to this when configuring the lab nodes.|
+|homer_public sub-directory|Root 'public' directory for homer, containing 'config' and 'templates' directories.  When using a particular lab homer's config.yaml should point to this directory for that lab.|
 |saved_configs<img width=300/>|Saved configuration of fully configured lab nodes for reference.|
 
 
