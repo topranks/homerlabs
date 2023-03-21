@@ -1,14 +1,12 @@
 # esilab
 
-![esilab topology](https://raw.githubusercontent.com/topranks/esilab/main/diagram.png)
+![esilab topology](https://raw.githubusercontent.com/topranks/homerlabs/main/labs/esilab/diagram.png)
 
 ### Overview
 
-This is a containerlab topology based on my previous [evpnlab](https://github.com/topranks/evpnlab) and [eqiadlab](https://github.com/topranks/eqiadlab), but with a vQFX device replacing SERVER1, and additional automation to configure ESI-based LAGs using BGP EVPN.
+This is a containerlab topology based on [evpnlab](../evpnlab) and [eqiadlab](../eqiadlab), but with a vQFX device replacing SERVER1, and additional automation to configure ESI-based LAGs using BGP EVPN.
 
-Please follow the instrucitions in the evpnlab repo for guidance on how to run the lab.  The only additional requirement here is to have a vrnetlab-based vMX container available to docker.  The topology file will look for a docker image called `vrnetlab/vr-vmx:21.2R1.10`, but you can replace with whatever the name of your local vMX container is.  Building the vrnetlab container for vMX is much the same as for the vQFX, only difference is you need the oriringal tgz file from Juniper (not the extracted VM images).
-
-Vlan100 is stretched across all LEAF devices using VXLAN.  All switches have an Anycast GW in this Vlan, which is part of VRF WMF_PROD.  Vlan200 is also configured on LEAF3, and has an IRB gateway interface configured on LEAF3.
+Initialising the lab is the same as for [eqiadlab](../eqiadlab), so please follow the instructions there to get things spun up.
 
 ### ESI-LAG
 
