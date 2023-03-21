@@ -1,6 +1,6 @@
 # Getting Started
 
-#### Notes
+### Notes
 
 The lab is designed to be run on Linux.  Some of the Juniper virtual devices run as QEMU virtual machines, so it is better to run on bare metal.  In theory, if nested virtualization is enabled, it should work in a VM, but I've not tested it.
 
