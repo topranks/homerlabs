@@ -112,4 +112,4 @@ HOST: server3                     Loss%   Snt   Last   Avg  Best  Wrst StDev
   3.|-- 2001:470:6a7f:100::11      0.0%     3  107.2 243.6 107.2 385.0 139.0
 ```
 
-NOTE: Lack of response at hop 2 in the above (leaf1) happens with vQFX.  In production on QFX5120 devices this is not observed with the same configuration.  The same mtr with real hardware would get a response at hop 2, from the irb.100 unicast address on LEAF1.
+NOTE: Lack of response at hop 2 in the above (leaf1) happens with vQFX.  In production on QFX5120 devices this is not observed with the same configuration.  The same mtr with the real hardware gets a response at hop 2, from the irb.100 unicast address on LEAF1.
