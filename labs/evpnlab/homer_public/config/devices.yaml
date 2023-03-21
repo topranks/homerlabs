@@ -44,10 +44,8 @@ LEAF3:
       access:
         "xe-0/0/2":
           descr: server3
-          vlan: VLAN200
+          vlan: VLAN101
     vlan_ints:
-      VLAN200:
-        ipv4: "198.18.200.254/24"
-        ipv6: "2001:0470:6a7f:0200::254/64"
-    
-    
+      VLAN101:
+        ipv4: "198.18.101.254/24"
+        ipv6: "2001:0470:6a7f:0101::254/64"

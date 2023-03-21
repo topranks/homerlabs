@@ -102,20 +102,6 @@ def getprompt(lines):
     sys.exit(1)
 
 
-def get_junos_dev(dev_name):
-    # Initiates NETCONF session to router
-    try:
-        device = Device(dev_name, username=args.user, ssh_config=args.sshconfig, port=22)
-        device.open()
-    except ConnectError as err:
-        print(f"Cannot connect to device: {err}")
-        sys.exit(1)
-
-    # Get config object
-    device.bind(config=Config)
-
-    return device
-
 
 if __name__ == '__main__':
     main()
