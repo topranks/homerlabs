@@ -45,8 +45,8 @@ Helper scripts are included to ease running the labs.
 |Name|Description|
 |----|-----------|
 |add_fqdn_hosts.py|Adds entries in /etc/hosts for all lab nodes, stripping the clab prefix so we can use short names (like 'leaf1') to connect.|
-|add_junos_user.py|Adds a new JunOS user to all discovered vQFX/vMX nodes, with a SSH public key for authentication.  Once run it lab nodes should be usable with homer.|
-|save_junos_configs.py|Saves JunOS configurations from discovered lab nodes.|
+|add_junos_user.py|Adds a new JunOS user to all discovered vQFX/vMX nodes, with a SSH public key for authentication.  Run after deploying a lab to allow homer to connect and add the remaining config.|
+|save_junos_configs.py|Saves JunOS configurations from discovered lab nodes.  Creates an sub-directory called 'saved_configs' in the location it is run, so best to run in the directory for a specific lab (i.e. ~/homerlabs/labs/evpnlab/).|
 
 Individual labs may also include specific helper-scripts, for instance to configure Linux networking in containers where required.
 
@@ -58,8 +58,8 @@ Each of the directories under 'labs' typically contain the following:
 |----|-----------|
 |README|Documentation on the specific lab, notes, instructions etc.|
 |Containerlab topology file|YAML file to instantiate the lab with `clab deploy -t`|
-|homer_public sub-directory|Root 'public' directory for homer, containing 'config' and 'templates' directories.  Homer's config.yaml should point to this when configuring the lab nodes.|
-|saved_configs<img width=300/>|Saved configuration of fully configured lab nodes for reference.  Creates an output directory called 'saved_configs' from where it is run, so best to run within the directory for a specific lab (i.e. ~/homerlabs/labs/evpnlab/).|
+|homer_public sub-directory|Root 'public' directory for homer, containing 'config' and 'templates' directories.  When using a particular lab homer's config.yaml should point to this directory for that lab.|
+|saved_configs<img width=300/>|Saved configuration of fully configured lab nodes for reference.|
 
 
 ### Resources
