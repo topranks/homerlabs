@@ -103,5 +103,13 @@ HOST: server3                     Loss%   Snt   Last   Avg  Best  Wrst StDev
   2.|-- ???                       100.0     3    0.0   0.0   0.0   0.0   0.0
   3.|-- 198.18.100.11              0.0%     3  261.3 256.3 106.4 401.3 147.5
 ```
+```
+root@server3:/# mtr -b -r -c 3 2001:470:6a7f:100::11
+Start: 2023-03-21T22:23:19+0000
+HOST: server3                     Loss%   Snt   Last   Avg  Best  Wrst StDev
+  1.|-- 2001:470:6a7f:101::254     0.0%     3  105.3 163.5 105.3 199.5  50.8
+  2.|-- ???                       100.0     3    0.0   0.0   0.0   0.0   0.0
+  3.|-- 2001:470:6a7f:100::11      0.0%     3  107.2 243.6 107.2 385.0 139.0
+```
 
 NOTE: Lack of response at hop 2 in the above (leaf1) happens with vQFX.  In production on QFX5120 devices this is not observed with the same configuration.  The same mtr with real hardware would get a response at hop 2, from the irb.100 unicast address on LEAF1.
