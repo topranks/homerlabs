@@ -1,7 +1,7 @@
 # homerlabs
 Virtual networking labs built with containerlab, configured with homer.
 
-![example topolgy diagram](https://raw.githubusercontent.com/topranks/homerlab/main/diagram.png)
+![example topolgy diagram](https://github.com/topranks/homerlabs/raw/main/diagram.png)
 
 ## Overview
 
