@@ -73,7 +73,7 @@ WMF_PROD.inet.0: 6 destinations, 8 routes (6 active, 0 holddown, 0 hidden)
                        to 10.1.2.0 via xe-0/0/1.0
 ```
 
-##### Configure server container IP addressing
+##### 5. Configure server container IP addressing
 
 Run the `config_servers.sh` shell script from the lab dir to add basic IP configuration to the containers simulating end servers:
 ```
