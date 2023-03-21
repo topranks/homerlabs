@@ -9,6 +9,7 @@ The lab is designed to be run on Linux.  Some of the Juniper virtual devices run
 #### 1. Install Docker
 
 Installer docker using [their instructions](https://docs.docker.com/engine/install/).
+
 &nbsp;  
 #### 2. Create docker container image that runs the vQFX VMs
 
