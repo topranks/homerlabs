@@ -10,8 +10,8 @@ eqiadlab:
       anycast_gw: 
         ipv4: "198.18.100.254"
         ipv6: "2001:0470:6a7f:0100::254"
-    VLAN200:
-      id: 200
+    VLAN101:
+      id: 101
 
   default_instance: WMF_PROD
   routing_instances:
