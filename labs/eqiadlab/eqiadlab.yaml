@@ -26,12 +26,8 @@ topology:
       kind: vr-vqfx
       image: vrnetlab/vr-vqfx:20.2R1.10
     server1:
-      kind: vr-vqfx
-      image: vrnetlab/vr-vqfx:20.2R1.10
-
-#    server1:
-#      image: debian:clab
-#      kind: linux
+      image: debian:clab
+      kind: linux
     server2:
       image: debian:clab
       kind: linux
@@ -59,8 +55,6 @@ topology:
 
     # leaf - server
     - endpoints: ["server1:eth1", "leaf1:eth3"]
-    - endpoints: ["server1:eth2", "leaf2:eth3"]
-
-    - endpoints: ["server2:eth1", "leaf2:eth4"]
+    - endpoints: ["server2:eth1", "leaf2:eth3"]
     - endpoints: ["server3:eth1", "leaf3:eth3"]
 

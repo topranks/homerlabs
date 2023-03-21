@@ -24,8 +24,6 @@ eqiadlab:
             peer_as: 64600
             md5: "$9$5T6AB1hrK8EcVw2gJZ69C" # test123
 
-  # Listed here so Homer has access when generating configs for all devices,
-  # allowing us to set up loopbacks of other switches as EVPN iBGP peers.
   devices:
     CORE1:
       role: core

@@ -54,15 +54,10 @@ LEAF1:
   role: leaf
   site: eqiadlab
   config:
-    lags:
-      "ae0":
-        ports:
-          xe-0/0/2: "SERVER1 xe-0/0/0"
-        sys_id: "01:02:00:00:00:01"
     vlan_ports:
       access:
-        "ae0":
-          descr: "SERVER1 ae0"
+        "xe-0/0/2":
+          descr: server1
           vlan: VLAN100
     vlan_ints:
       VLAN100:
@@ -73,15 +68,10 @@ LEAF2:
   role: leaf
   site: eqiadlab
   config:
-    lags:
-      "ae0":
-        ports:
-          xe-0/0/2: "SERVER1 xe-0/0/1"
-        sys_id: "01:02:00:00:00:01"
     vlan_ports:
       access:
-        "ae0":
-          descr: "SERVER1 ae0"
+        "xe-0/0/2":
+          descr: server2
           vlan: VLAN100
     vlan_ints:
       VLAN100:
@@ -103,17 +93,3 @@ LEAF3:
         ipv6: "2001:0470:6a7f:0200::254/64"
     
     
-SERVER1:
-  role: basicsw
-  site: eqiadlab
-  config:
-    lags:
-      "ae0":
-        ports:
-          xe-0/0/0: "LEAF1 xe-0/0/2"
-          xe-0/0/1: "LEAF2 xe-0/0/2"
-    ip_ints:
-      "ae0":
-        descr: "LAG to LEAF1 and LEAF2"
-        ipv4: "198.18.100.100/24"
-
