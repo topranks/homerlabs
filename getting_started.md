@@ -272,8 +272,8 @@ cathal@officepc:~$ ssh -i ~/.ssh/homerlabs_ed25519 homer@leaf1
 {master:0}
 homer@vqfx-re> 
 ```
-    
-&nbsp;  
+
+&nbsp;
 #### 15. Configure devices using Homer
 
 Once passwordless SSH is running we should be able to push config's homer generates to the devices, for instance:
@@ -303,3 +303,16 @@ INFO:homer:Homer run completed successfully on 5 devices: ['LEAF1', 'LEAF2', 'LE
 ```
 
 Be aware these generalized instructions are just a guide, specific labs may have additional steps to follow so check the README file for each lab you wish to run.
+
+&nbsp;  
+#### 16. Save device configs 
+    
+The included utility 'save_junos_configs.py" can be used to save the configurations of lab JunOS devices.  By default it writes to a folder called "saved_configs", saving the configuraiton of each device in both 'json' and 'set' format.
+```
+cathal@officepc:~/homerlabs/labs/evpnlab$ ../../save_junos_configs.py -t evpnlab.yaml -s ~/.ssh/config_homer 
+Connecting to leaf1... saved ok.
+Connecting to leaf2... saved ok.
+Connecting to leaf3... saved ok.
+Connecting to spine1... saved ok.
+Connecting to spine2... saved ok.
+```
