@@ -58,7 +58,7 @@ Each of the directories under 'labs' typically contain the following:
 |----|-----------|
 |README|Documentation on the specific lab, notes, instructions etc.|
 |Containerlab topology file|YAML file to instantiate the lab with `clab deploy -t`|
-|homer_public sub-directory|Root 'public' directory for homer, containing 'config' and 'templates' directories.  When using a particular lab homer's config.yaml should point to this directory for that lab.|
+|homer_public sub-directory|Root 'public' directory for homer, containing 'config' and 'templates' directories.  When using a particular lab homer's `config.yaml` should point to this directory for that lab.|
 |saved_configs<img width=300/>|Saved configuration of fully configured lab nodes for reference.|
 
 
