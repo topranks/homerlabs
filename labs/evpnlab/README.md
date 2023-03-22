@@ -110,7 +110,9 @@ A V Destination        P Prf   Metric 1   Metric 2  Next hop        AS path
                                                     10.2.2.1
 ```
 
-We can see that SPINE2 still has a route to this prefix, as expected, but the Metric 2 value has increased as there are more hops in the path.  Checking back on CORE2 we can see the effect this has on routing:
+We can see that SPINE2 still has a route to this prefix, as expected, but the Metric 2 value (OSPF cost) has increased from 1 to 3 as there are more hops in the path.  
+
+Checking back on CORE2 we can see the effect this has on routing:
 ```
 root@CORE2> show route table inet.0 198.18.101.0/24    
 
