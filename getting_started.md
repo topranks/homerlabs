@@ -151,7 +151,7 @@ Create a new file at `~/.ssh/config_homer` with your favourite editor, for insta
 Now add the following contents:
 ```
 Host *
-    User homer
+    User root
     IdentityFile ~/.ssh/homerlabs_ed25519
 ```
 
@@ -162,7 +162,7 @@ You'll need to create a homer configuration file at **/etc/homer/config.yaml**. 
 
 |Variable path|Description|
 |-------------|-----------|
-|transports/username|Username that Homer will use when initiating SSH to devices, a JunOS user needs to be set up on the devices with the same name|
+|transports/username|Username that Homer will use when initiating SSH to devices, a JunOS user needs to be set up on the devices with the same name.  In these labs we use 'root' for all devices|
 |tansports/ssh_config|Path of the SSH config file created in the last step|
 |base_paths/public|This var needs to be changed when running different labs.  It needs to point at the appropriate 'homer_public' dir from this repo for the given lab.  This directory contains all the YAML config and Jinja templates to automate the config for a particular lab.  Path should be absolute, bash shortcuts like '~' for home directory don't work.|
 
@@ -176,7 +176,7 @@ base_paths:
 
 # Transpors configuration. [optional]
 transports:
-  username: homer
+  username: root
   ssh_config: ~/.ssh/config_homer
   junos:
     ignore_warning:
