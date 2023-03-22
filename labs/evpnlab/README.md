@@ -43,7 +43,9 @@ root@LEAF3> show route table WMF_PROD.inet.0 198.18.100.8/29 detail | match "198
                     Source VTEP: 13.13.13.13, Destination VTEP: 12.12.12.12
 ```
 
-In both cases the LEAF forward traffic for these IPs via the Spine switches with ECMP, as can be seen from the next-hops listed.  But the 'destination VTEP' is different for each, reflecting the fact that one destination is reachable via LEAF1, and the other via LEAF2.  The VNI used in the VXLAN encapsulation of both is the L3VNI from the type-5 EVPN routes.
+In both cases traffic will be sent to one of the SPINE switches on a directly connected interface.  But the 'destination VTEP' is different for each, reflecting the fact that one destination is reachable via LEAF1, and the other via LEAF2.  The VNI used in the VXLAN encapsulation for both is the L3VNI from the type-5 EVPN routes.
+
+In this way we can avoid configuring every Vlan on every LEAF device, despite JunOS not supporting symmetric EVPN IRB.
 
 ### External connections 
 
