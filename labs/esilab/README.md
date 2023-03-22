@@ -6,8 +6,6 @@
 
 This is a containerlab topology based on [evpnlab](../evpnlab) and [eqiadlab](../eqiadlab), but with a vQFX device replacing SERVER1, and additional automation to configure ESI-based LAGs using BGP EVPN.
 
-Initialising the lab is the same as for [eqiadlab](../eqiadlab), so please follow the instructions there to get things spun up.
-
 ### ESI-LAG
 
 When the automation runs the ESI-LAG is built between LEAF1 and LEAF2, and in the output you can see it working.
@@ -125,3 +123,99 @@ Aggregated interface: ae0
 
 Failover seems to all work as expected.  Run the `config_servers.sh` script to add IPv4 addressing to the Debian containers to run pings while testing.
 
+
+
+### Initializing the lab
+
+Pretty much the same as for eqiadlab.  Users should have installed everything as described in [getting started](../../getting_started.md), and be familiar with the generic steps described there to run labs.  Below is a high-level overview:
+
+##### 1. Change to the lab directory and init the lab with containerlab:
+```
+cd ~/homerlabs/labs/esilab
+sudo clab deploy -t esilab.yaml
+```
+
+vQFX devices take a few minutes to start up, so wait 5-10 minutes before proceeding.
+
+##### 2. Add entries for lab nodes to your local host file:
+```
+cd ~/homerlabs
+sudo ./add_fqdn_hosts.py
+```
+
+##### 3. Add local user and SSH key to the vQFX devices:
+```
+sudo ./add_junos_user.py --user homer --pubkey ~/.ssh/homerlabs_ed25519.pub 
+```
+
+#### 4. Add user config to vMX devices manually
+
+The default user/pass for the vMX isn't clear, so we need to add our user manually.  For example for core1 (make sure to use your own SSH public key not the one shown below):
+```
+cathal@officepc:~$ sudo ip netns exec clab-esilab-core1 telnet localhost 5000 
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+
+root@:~ # cli
+root@core1> 
+
+root@core1> configure 
+Entering configuration mode
+
+[edit]
+root@core1# set system login user homer class super-user 
+
+[edit]
+root@core1# set system login user homer authentication ssh-ed25519 "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFyIygMcbB1dZpJodQCTd1kqhXWIWu2KKjztnxyq6KCX cathal@officepc" 
+
+[edit]
+root@core1# commit 
+commit complete
+
+[edit]
+root@core1# exit 
+Exiting configuration mode
+
+root@core1> 
+```
+
+We can exit the telnet session with CTRL + ], and then typing quit:
+```
+telnet> quit
+Connection closed.
+```
+
+After which we should be able to SSH:
+```
+cathal@officepc:~$ ssh -i ~/.ssh/homerlabs_ed25519 homer@core1
+Last login: Tue Mar 21 23:31:31 2023 from 10.0.0.2
+--- JUNOS 21.2R1.10 Kernel 64-bit  JNPR-12.1-20210529.2f59a40_buil
+homer@core1> 
+```
+
+Repeat for core2.
+
+##### 5. Configure the JunOS devices with Homer:
+```
+homer '*' commit "configure esilab"
+```
+
+##### 5. Configure server container IP addressing
+
+Run the `config_servers.sh` shell script from the lab dir to add basic IP configuration to the containers simulating end servers:
+```
+cathal@officepc:~/homerlabs/labs/esilab$ ./config_servers.sh 
++ sudo ip netns exec clab-esilab-server2 ip addr add 198.18.100.102/24 dev eth1
++ sudo ip netns exec clab-esilab-server2 ip route add 198.18.0.0/16 via 198.18.100.254
++ sudo ip netns exec clab-esilab-server3 ip addr add 198.18.100.103/24 dev eth1
++ sudo ip netns exec clab-esilab-server3 ip route add 198.18.0.0/16 via 198.18.100.254
++ sudo ip netns exec clab-esilab-server4 ip addr add 198.18.200.201/24 dev eth1
++ sudo ip netns exec clab-esilab-server4 ip route add 198.18.0.0/16 via 198.18.200.254
++ sudo ip netns exec clab-esilab-server5 ip addr add 198.18.100.105/24 dev eth1
++ sudo ip netns exec clab-esilab-server5 ip route add 198.18.0.0/16 via 198.18.100.254
+```
+
+### TODO
+
+Add IPv6 config to the server script.
