@@ -20,7 +20,7 @@ sudo ./add_fqdn_hosts.py
 
 ##### 3. Add local user and SSH key to the vQFX devices:
 ```
-sudo ./add_junos_user.py --user homer --pubkey ~/.ssh/homerlabs_ed25519.pub 
+sudo ./add_junos_user.py --user root --pubkey ~/.ssh/homerlabs_ed25519.pub 
 ```
 
 ##### 4. Configure the cRPD device interfaces
