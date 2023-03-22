@@ -18,7 +18,7 @@ cd ~/homerlabs
 sudo ./add_fqdn_hosts.py
 ```
 
-#### 3. Add local user and SSH key to the vQFX devices:
+#### 3. Add SSH pubkey for vQFX root user:
 ```
 sudo ./add_junos_user.py --user root --pubkey ~/.ssh/homerlabs_ed25519.pub 
 ```
