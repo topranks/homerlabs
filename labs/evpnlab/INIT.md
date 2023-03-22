@@ -1,10 +1,10 @@
 # evpnlab
 
-#### Running the lab
+## Running the lab
 
 Users should have installed everything as described in [getting started](../../getting_started.md), and be familiar with the generic steps described there to run labs.  Below is a high-level overview:
 
-##### 1. Change to the lab directory and init the lab with containerlab:
+#### 1. Change to the lab directory and init the lab with containerlab:
 ```
 cd ~/homerlabs/labs/evpnlab
 sudo clab deploy -t evpnlab.yaml
@@ -12,18 +12,18 @@ sudo clab deploy -t evpnlab.yaml
 
 vQFX devices take a few minutes to start up, so wait 5-10 minutes before proceeding.
 
-##### 2. Add entries for lab nodes to your local host file:
+#### 2. Add entries for lab nodes to your local host file:
 ```
 cd ~/homerlabs
 sudo ./add_fqdn_hosts.py
 ```
 
-##### 3. Add local user and SSH key to the vQFX devices:
+#### 3. Add local user and SSH key to the vQFX devices:
 ```
 sudo ./add_junos_user.py --user root --pubkey ~/.ssh/homerlabs_ed25519.pub 
 ```
 
-##### 4. Configure the cRPD device interfaces
+#### 4. Configure the cRPD device interfaces
 
 Run the included `config_crpd.py` script to add interface IP addressing to the cRPD nodes
 ```
@@ -35,7 +35,7 @@ sudo ip netns exec clab-evpnlab-core1 ip addr add 100.64.1.1/31 dev eth2
 sudo ip netns exec clab-evpnlab-core2 ip addr add 100.64.2.1/31 dev eth2
 ```
 
-##### 6. Configure server interface addressing 
+#### 6. Configure server interface addressing 
 
 Run the `config_servers.sh` shell script from the lab dir to add basic IP configuration to the containers simulating end servers:
 ```
@@ -54,7 +54,7 @@ cathal@officepc:~/homerlabs/labs/evpnlab$ ./config_servers.sh
 + sudo ip netns exec clab-evpnlab-server3 ip route add 2001:0470:6a7f:0100::/60 via 2001:0470:6a7f:0101::254
 ```
 
-##### 7. Configure the JunOS devices with Homer:
+#### 7. Configure the JunOS devices with Homer:
 ```
 homer '*' commit "configure evpnlab"
 ```
@@ -100,7 +100,7 @@ WMF_PROD.inet.0: 6 destinations, 8 routes (6 active, 0 holddown, 0 hidden)
                        to 10.1.2.0 via xe-0/0/1.0
 ```
 
-##### 5. Checks
+#### 5. Checks
 
 Networking should work if all going well!
 ```
