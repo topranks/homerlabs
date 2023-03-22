@@ -232,7 +232,7 @@ INFO[0004] Adding containerlab host entries to /etc/hosts file
 &nbsp;  
 #### 14. Add local hosts file entries for the lab nodes
 
-Containerlab adds all nodes it initates to the local hosts file with the naming convention clab-<labname>-<nodename>.
+Containerlab adds all nodes it initates to the local hosts file with the naming convention `clab-<labname>-<nodename>`.
 
 Typically in the Homer YAML files the nodes are named just with the 'nodename' part of this.  To make the devices reachable from homer using only this short name we can run the invluded `add_fqdn_hosts.py` script as follows:
 ```
