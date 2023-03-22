@@ -17,7 +17,7 @@ The lab is based on vQFX devices, which are placed in a Spine/Leaf topology with
 
 OSPF is used as the underlay routing protcol between all these devices, all in area 0.0.0.0 and OSPFv2 only.
 
-BGP EVPN is running between the vQFX devices also, to exchange information about overlay layer-2 and layer-3 networks.  It is an IBGP setup with the Spine devices acting as route reflectors.  Spines peer with all other Spines, and each Leaf peers with its directly connected Spines.  Leaf devices do not peer with each other, the Spine route reflection ensures they learn routes with destinations on remote Leaf switches.
+BGP EVPN is running between the vQFX devices also, to exchange information about overlay layer-2 and layer-3 networks.  It is an IBGP setup with the Spine devices acting as route reflectors.  All peering is between device loopback IPs knwon through OSPF.  Spines peer with all other Spines, and each Leaf peers with its directly connected Spines.  Leaf devices do not peer with each other, the Spine route reflection ensures they learn routes with destinations on remote Leaf switches.
 
 The Leaf switches provided the local IP gateway for the connected test servers.  LEAF1 and LEAF2 share a common Vlan, Vlan 100, which is bound to a VXLAN VNI.  They use an EVPN anycast gateway on this vlan with the same IP gateway configured on both switches.  Server1 and Server2 attach to this Vlan, one off each of the switches.
 
