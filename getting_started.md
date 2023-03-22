@@ -242,32 +242,32 @@ renamed '/tmp/new_hosts' -> '/etc/hosts'
 ```
 
 &nbsp;
-#### 15. Add local user to Junos with SSH public key
+#### 15. Add SSH public key auth for root user
 
 Before it's possible to use homer to configure virutal Juniper devices we need to add a user to them matching what we configured in the homer config file above.
 
-The included script with this repo, `add_junos_user.py`, will find all VM-based Juniper clab devices, log on using the default username/password, and add a new user and SSH public key.
+The included script with this repo, `add_junos_user.py`, will find all VM-based Juniper clab devices, log on using the default username/password, and set the public key for hte root user to the one we created.
 
 Run it with 'sudo' as it needs the rights to see all the running docker containers:
 ```
-cathal@officepc:~/homerlabs$ sudo ./add_junos_user.py --user homer --pubkey ~/.ssh/homerlabs_ed25519.pub 
+cathal@officepc:~/homerlabs$ sudo ./add_junos_user.py --user root --pubkey ~/.ssh/homerlabs_ed25519.pub 
 Trying to conenct to leaf1 at 172.20.20.6... connected.
-Adding user homer with CLI... done.
+Adding user root with CLI... done.
 Trying to conenct to leaf2 at 172.20.20.8... connected.
-Adding user homer with CLI... done.
+Adding user root with CLI... done.
 Trying to conenct to leaf3 at 172.20.20.4... connected.
-Adding user homer with CLI... done.
+Adding user root with CLI... done.
 Trying to conenct to spine1 at 172.20.20.9... connected.
-Adding user homer with CLI... done.
+Adding user root with CLI... done.
 Trying to conenct to spine2 at 172.20.20.2... connected.
-Adding user homer with CLI... done.
+Adding user root with CLI... done.
 ```
 
 NOTE: This takes a *long* time.  For some reason the Juniper [StartShell](https://www.juniper.net/documentation/us/en/software/junos-pyez/junos-pyez-developer/topics/task/junos-pyez-program-shell-accessing.html) takes ages to run on the vQFX, at least on my system.  But it works ok, I need to revisit to see why it goes so slow.
 
 When done you should be able to SSH into any of the Juniper devices using their short name, and the username and ssh key generated earlier:
 ```
-cathal@officepc:~$ ssh -i ~/.ssh/homerlabs_ed25519 homer@leaf1 
+cathal@officepc:~$ ssh -F ~/.ssh/config_homer leaf1 
 --- JUNOS 19.4R1.10 built 2019-12-19 03:54:05 UTC
 {master:0}
 homer@vqfx-re> 
