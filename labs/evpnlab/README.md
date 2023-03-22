@@ -4,16 +4,16 @@
 
 This is a Juniper lab to test some EVPN/VXLAN stuff built using vQFX running on qemu on Linux, orchestrated with [containerlab](https://containerlab.srlinux.dev/).  The vQFX configuration is automated through [PyEZ](https://github.com/Juniper/py-junos-eznc) and [Homer](https://doc.wikimedia.org/homer/master/introduction.html).
 
-#### Running the lab
+## Running the lab
 
 Specific instructions for this lab can be found in [INIT.md](INIT.md) in this directory.
 
 Users should have installed everything as described in [getting started](../../getting_started.md), and be familiar with the generic steps described there to run labs.
 
 
-#### Lab Description
+## Lab Description
 
-##### VXLAN Fabric
+### VXLAN Fabric
 
 The lab is based on vQFX devices, which are placed in a Spine/Leaf topology with 2 Spine devices and 3 Leaf devices.
 
@@ -25,7 +25,7 @@ The Leaf switches provided the local IP gateway for the connected test servers. 
 
 LEAF3 has a different Vlan, VLAN101, configured, which Server3 attaches to.  While Juniper only supports assymetric IRB for VXLAN with type-2 EVPN routes, which on its own means all Vlans/VNIs need to be configured on all siwtches to allow for optimal routing, we overcome this in the lab with the use of EVPN type 5 routes.
 
-##### Optimal forwarding without configuring all Vlans on all Leaf devices
+### Optimal forwarding without configuring all Vlans on all Leaf devices
 
 The Leaf switches are configured to export all local EVPN routes as type 5 EVPN ip-prefix routes as well.  This means that, for instance, LEAF3 learns /32 host routes for individual IPs in the Vlan100 subnet (198.18.100.0/24) through the L3VNI, without having the L2VNI for Vlan100 configured locally.  
 
@@ -47,7 +47,7 @@ root@LEAF3> show route table WMF_PROD.inet.0 198.18.100.8/29 detail | match "198
 
 In both cases the LEAF forward traffic for these IPs via the Spine switches with ECMP, as can be seen from the next-hops listed.  But the 'destination VTEP' is different for each, reflecting the fact that one destination is reachable via LEAF1, and the other via LEAF2.  The VNI used in the VXLAN encapsulation of both is the L3VNI from the type-5 EVPN routes.
 
-##### External connections 
+### External connections 
 
 Two 'CORE' devices are also part of the lab.  These are cRPD devices intended to act as a basic way to test routing outside of the VXLAN fabric.  Each Spine switch has a link to one of the Core switches.  The core devices announce only a default route to the Spine layer.  On the Spine side the BGP sessions terminate in the WMF_PROD overlay routing instance, and the Spine announces all local and EVPN routes to the cores.
 
