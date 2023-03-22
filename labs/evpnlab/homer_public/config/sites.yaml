@@ -1,6 +1,7 @@
 ---
 evpnlab:
   bgp:
+    core_as: 14907
     evpn_as: 65187
     rr_cluster: 1.1.1.1
 
@@ -25,6 +26,12 @@ evpnlab:
             md5: "$9$5T6AB1hrK8EcVw2gJZ69C" # test123
 
   devices:
+    CORE1:
+      role: core
+      loopback: 100.100.100.100
+    CORE2:
+      role: core
+      loopback: 200.200.200.200
     SPINE1:
       role: spine
       loopback: 1.1.1.1
@@ -74,4 +81,26 @@ evpnlab:
         SPINE2: "xe-0/0/2"
         LEAF3: "xe-0/0/1"
       v4_prefix: "10.3.2.0/31"
+
+    - nodes:
+        SPINE2: "xe-0/0/2"
+        LEAF3: "xe-0/0/1"
+      v4_prefix: "10.3.2.0/31"
+
+    - nodes:
+        CORE1: "eth1"
+        CORE2: "eth1"
+      v4_prefix: "100.64.0.0/31"
+
+    - nodes:
+        CORE1: "eth2"
+        SPINE1: "xe-0/0/3"
+      v4_prefix: "100.64.1.0/31"
+      vrf: WMF_PROD
+
+    - nodes:
+        CORE2: "eth2"
+        SPINE2: "xe-0/0/3"
+      v4_prefix: "100.64.2.0/31"
+      vrf: WMF_PROD
 

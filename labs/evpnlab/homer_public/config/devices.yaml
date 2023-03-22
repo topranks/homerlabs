@@ -1,12 +1,79 @@
+CORE1:
+  role: core
+  site: evpnlab
+  config:
+    device_bgp:
+      groups:
+        SWITCH_CR:
+          export: DEFAULT-OUT
+          peers:
+            "100.64.1.0":
+              descr: SPINE1
+              peer_as: 65187
+        IBGP:
+          type: internal
+          export: ALLOW-ALL
+          peers:
+            "100.64.0.0":
+              descr: CORE2
+              peer_as: 14907
+
+CORE2:
+  role: core
+  site: evpnlab
+  config:
+    device_bgp:
+      groups:
+        SWITCH_CR:
+          export: DEFAULT-OUT
+          peers:
+            "100.64.2.0":
+              descr: SPINE2
+              peer_as: 65187
+        IBGP:
+          type: internal
+          export: ALLOW-ALL
+          peers:
+            "100.64.0.1":
+              descr: CORE1
+              peer_as: 14907
+
 SPINE1:
   role: spine
   site: evpnlab
-  config: {}
+  config:
+    device_bgp:
+      routing_instance:
+        WMF_PROD:
+          groups:
+            CORE_ROUTERS:
+              export: "EXT_OUT"
+              peers:
+                "100.64.1.1":
+                  descr: CR1
+                  peer_as: 14907
+#          v6_groups:
+#            CORE_ROUTERS_V6:
+#              export: "EXTV6_OUT"
+#              peers:
+#                "2001:0470:6a7f:0083::1":
+#                  descr: CR1
+#                  peer_as: 14907
 
 SPINE2:
   role: spine
   site: evpnlab
-  config: {}
+  config:
+    device_bgp:
+      routing_instance:
+        WMF_PROD:
+          groups:
+            CORE_ROUTERS:
+              export: "EXT_OUT"
+              peers:
+                "100.64.2.1":
+                  descr: CR1
+                  peer_as: 14907
 
 LEAF1:
   role: leaf

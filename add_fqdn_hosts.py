@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 
-import yaml
 import os
 
 def main():
@@ -11,7 +10,7 @@ def main():
     with open('/etc/hosts', 'r') as hostsfile:
         for line in hostsfile.readlines():
             line_strip = line.rstrip('\n')
-            if "clab-" in line:
+            if "lab-" in line:
                 device = line.split()[-1].split("-")[-1]
                 new_file.write(f"{line_strip}\t{device}\n")
             else:

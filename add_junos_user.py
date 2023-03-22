@@ -8,6 +8,7 @@ from jnpr.junos.utils.start_shell import StartShell
 import argparse
 import os
 import subprocess
+import sys
 
 import warnings
 warnings.filterwarnings(action='ignore',module='.*paramiko.*')
@@ -21,7 +22,7 @@ from time import sleep
 from pprintpp import pprint as pp
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-u', '--user', help='User to add to devices', default='homer')
+parser.add_argument('-u', '--user', help='User to add to devices', default='root')
 parser.add_argument('-p', '--pubkey', help='Path to SSH public key', default='~/.ssh/homerlabs_ed25519.pub')
 parser.add_argument('-s', '--sshconf', help='Path to SSH config file to use when connecting', default='~/.ssh/config_homer')
 args = parser.parse_args()
@@ -46,7 +47,7 @@ def get_clab_juniper():
         if len(split_line) == 21:
             # Line has lab name in it
             labname = split_line[5]
-        nodename = split_line[-14].removeprefix(f"clab-{labname}-")
+        nodename = split_line[-14].split("-")[-1]
         kind = split_line[-8]
         ip = split_line[-4].split("/")[0]
 
@@ -69,6 +70,8 @@ def add_user_config(dev_name, dev_vars, pubkey):
         print(f"{dev_name} is vMX - add from docker shell - don't know default password!")
         return
 
+    ssh_key_type = pubkey.split()[0]
+
     ss = StartShell(device)
     ss.open()
     print("connected.")
@@ -78,10 +81,12 @@ def add_user_config(dev_name, dev_vars, pubkey):
     print(f"Adding user {args.user} with CLI... ", end="", flush=True)
     ret_val, lines = ss.run('configure')
     getprompt(lines)
-    ret_val, lines = ss.run(f"set system login user {args.user} class super-user")
-    getprompt(lines)
-    ssh_key_type = pubkey.split()[0]
-    ret_val, lines = ss.run(f"set system login user {args.user} authentication {ssh_key_type} \"{pubkey}\"")
+    if args.user == "root":
+        ret_val, lines = ss.run(f"set system root-authentication {ssh_key_type} \"{pubkey}\"")
+    else:
+        ret_val, lines = ss.run(f"set system login user {args.user} class super-user")
+        getprompt(lines)
+        ret_val, lines = ss.run(f"set system login user {args.user} authentication {ssh_key_type} \"{pubkey}\"")
     getprompt(lines)
     ret_val, lines = ss.run("commit")
     getprompt(lines)

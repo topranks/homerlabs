@@ -3,41 +3,60 @@ mgmt:
   network: evpnlab
   bridge: clab
 topology:
+  kinds:
+    crpd:
+      image: crpd:latest
+      license: /home/cathal/crpd.lic
+      binds:
+        - /home/cathal/homerlabs_ed25519.pub:/root/.ssh/authorized_keys
+    vr-vqfx:
+      image: vrnetlab/vr-vqfx:latest
+    linux:
+      image: debian:clab
+      binds:
+        - /home/cathal/.ssh/homerlabs_ed25519.pub:/root/.ssh/authorized_keys
+
   nodes:
+    core1:
+      kind: crpd
+    core2:
+      kind: crpd
     leaf1:
       kind: vr-vqfx
-      image: vrnetlab/vr-vqfx:20.2R1.10
     leaf2:
       kind: vr-vqfx
-      image: vrnetlab/vr-vqfx:20.2R1.10
     leaf3:
       kind: vr-vqfx
-      image: vrnetlab/vr-vqfx:20.2R1.10
     spine1:
       kind: vr-vqfx
-      image: vrnetlab/vr-vqfx:20.2R1.10
     spine2:
       kind: vr-vqfx
-      image: vrnetlab/vr-vqfx:20.2R1.10
     server1:
-      image: debian:clab
       kind: linux
     server2:
-      image: debian:clab
       kind: linux
     server3:
-      image: debian:clab
       kind: linux
 
   links:
+    # core - core
+    - endpoints: ['core1:eth1', 'core2:eth1']
+
+    # core - spine
+    - endpoints: ['core1:eth2', 'spine1:eth4']
+    - endpoints: ['core2:eth2', 'spine2:eth4']
+
+    # spine1 - leaf
     - endpoints: ["spine1:eth1", "leaf1:eth1"]
     - endpoints: ["spine1:eth2", "leaf2:eth1"]
     - endpoints: ["spine1:eth3", "leaf3:eth1"]
 
+    # spine2 - leaf
     - endpoints: ["spine2:eth1", "leaf1:eth2"]
     - endpoints: ["spine2:eth2", "leaf2:eth2"]
     - endpoints: ["spine2:eth3", "leaf3:eth2"]
 
+    # leaf - server
     - endpoints: ["server1:eth1", "leaf1:eth3"]
     - endpoints: ["server2:eth1", "leaf2:eth3"]
     - endpoints: ["server3:eth1", "leaf3:eth3"]
