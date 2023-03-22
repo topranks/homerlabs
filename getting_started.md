@@ -79,7 +79,7 @@ Then alias the newly-added image as `crpd:latest`:
 
 If you've followed the steps you should now have several docker images on the local system, run 'docker images' to verify everything looks ok.
 
-You'll have several more than shown below, but all 4 should be present with the same 'repository' and 'tag' so the names used in the lab YAML topologies will work:
+You'll have more than shown below, but these 4 should be present with the same 'repository' and 'tag' shown:
 ```
 root@officepc:~# sudo docker images
 REPOSITORY                     TAG             IMAGE ID       CREATED        SIZE
