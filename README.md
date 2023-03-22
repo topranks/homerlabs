@@ -46,7 +46,7 @@ Helper scripts are included to ease running the labs.
 |----|-----------|
 |add_fqdn_hosts.py|Adds entries in /etc/hosts for all lab nodes, stripping the clab prefix so we can use short names (like 'leaf1') to connect.|
 |add_junos_user.py|Adds a new JunOS user to all discovered vQFX/vMX nodes, with a SSH public key for authentication.  Run after deploying a lab to allow homer to connect and add the remaining config.|
-|save_junos_configs.py|Saves JunOS configurations from discovered lab nodes.  Creates an sub-directory called 'saved_configs' in the location it is run, so best to run in the directory for a specific lab (i.e. ~/homerlabs/labs/evpnlab/).|
+|save_junos_configs.py|Saves JunOS configurations from discovered lab nodes.|
 
 Individual labs may also include specific helper-scripts, for instance to configure Linux networking in containers where required.
 
