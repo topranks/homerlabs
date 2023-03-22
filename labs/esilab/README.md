@@ -143,9 +143,9 @@ cd ~/homerlabs
 sudo ./add_fqdn_hosts.py
 ```
 
-##### 3. Add local user and SSH key to the vQFX devices:
+##### 3. Add SSH key for root user on the vQFX devices:
 ```
-sudo ./add_junos_user.py --user homer --pubkey ~/.ssh/homerlabs_ed25519.pub 
+sudo ./add_junos_user.py --user root --pubkey ~/.ssh/homerlabs_ed25519.pub 
 ```
 
 #### 4. Add user config to vMX devices manually
@@ -167,7 +167,7 @@ Entering configuration mode
 root@core1# set system login user homer class super-user 
 
 [edit]
-root@core1# set system login user homer authentication ssh-ed25519 "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFyIygMcbB1dZpJodQCTd1kqhXWIWu2KKjztnxyq6KCX cathal@officepc" 
+root@core1# set system root-authentication ssh-ed25519 "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFyIygMcbB1dZpJodQCTd1kqhXWIWu2KKjztnxyq6KCX cathal@officepc" 
 
 [edit]
 root@core1# commit 
@@ -188,17 +188,17 @@ Connection closed.
 
 After which we should be able to SSH:
 ```
-cathal@officepc:~$ ssh -i ~/.ssh/homerlabs_ed25519 homer@core1
+cathal@officepc:~$ ssh -i ~/.ssh/homerlabs_ed25519 root@core1
 Last login: Tue Mar 21 23:31:31 2023 from 10.0.0.2
 --- JUNOS 21.2R1.10 Kernel 64-bit  JNPR-12.1-20210529.2f59a40_buil
-homer@core1> 
+root@core1> 
 ```
 
 Repeat for core2.
 
 ##### 5. Configure the JunOS devices with Homer:
 ```
-homer '*' commit "configure esilab"
+homer "*" commit "configure esilab"
 ```
 
 ##### 5. Configure server container IP addressing
