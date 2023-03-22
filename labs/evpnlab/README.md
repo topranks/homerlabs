@@ -49,7 +49,7 @@ In this way we can avoid configuring every Vlan on every LEAF device, despite Ju
 
 ### External connections 
 
-Two 'CORE' devices are also part of the lab.  These are cRPD devices intended to act as a basic way to test routing outside of the VXLAN fabric.  Each Spine switch has a link to one of the Core switches.  The core devices announce only a default route to the Spine layer.  On the Spine side the BGP sessions terminate in the WMF_PROD overlay routing instance, and the Spine announces all local and EVPN routes to the cores.
+Two 'CORE' devices are also part of the lab.  These are cRPD devices intended to act as a basic way to test routing outside of the VXLAN fabric.  Each Spine switch has a link to one of the Core routers.  The two core devices also have a direct link over which they run unicast IBGP.  The core devices announce only a default route to the Spine layer.  On the Spine side the BGP sessions terminate in the WMF_PROD VRF, and the Spine announces all local and EVPN routes to the cores.
 
 Worth noting is the configuration in the outbound policy towards the COREs on the SPINE devices:
 ```
