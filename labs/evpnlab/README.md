@@ -17,15 +17,15 @@ The lab is based on vQFX devices, which are placed in a Spine/Leaf topology with
 
 OSPF is used as the underlay routing protcol between all these devices, all in area 0.0.0.0 and OSPFv2 only.
 
-BGP EVPN is running between the vQFX devices also, to exchange information about overlay layer-2 and layer-3 networks.  It is an IBGP setup with the Spine devices acting as route reflectors.  All peering is between device loopback IPs knwon through OSPF.  Spines peer with all other Spines, and each Leaf peers with its directly connected Spines.  Leaf devices do not peer with each other, the Spine route reflection ensures they learn routes with destinations on remote Leaf switches.
+BGP EVPN is running between the vQFX devices also, to exchange information about overlay layer-2 and layer-3 networks.  It is an IBGP setup with the Spine devices acting as route reflectors.  All peering is between device loopback IPs known through OSPF.  Spines peer with all other Spines, and all the downstream Leaf switches.  Leaf devices do not peer with each other, the Spine route reflection ensures they learn routes originated by the other Leaf switches.
 
-The Leaf switches provided the local IP gateway for the connected test servers.  LEAF1 and LEAF2 share a common Vlan, Vlan 100, which is bound to a VXLAN VNI.  They use an EVPN anycast gateway on this vlan with the same IP gateway configured on both switches.  Server1 and Server2 attach to this Vlan, one off each of the switches.
+The Leaf devices provide the local IP gateway for connected test servers.  LEAF1 and LEAF2 share a common Vlan, Vlan 100, which is bound to a VXLAN VNI.  They use an EVPN anycast gateway on this vlan with the same IP gateway configured on both switches.  Server1 and Server2 attach to this Vlan, one off each of the switches.
 
-LEAF3 has a different Vlan, VLAN101, configured, which Server3 attaches to.  While Juniper only supports assymetric IRB for VXLAN with type-2 EVPN routes, which on its own means all Vlans/VNIs need to be configured on all siwtches to allow for optimal routing, we overcome this in the lab with the use of EVPN type 5 routes.
+LEAF3 has a different Vlan, VLAN101, configured, which Server3 attaches to.  Juniper only support assymetric IRB for VXLAN with type-2 EVPN routes, which on its own requires that all Vlans/VNIs need to be configured on all siwtches.  We work around this restriction in this lab by exporting all host routes as EVPN type-5 prefix routes, so all devices in the VRF see all routes.
 
 ### Optimal forwarding without configuring all Vlans on all Leaf devices
 
-The Leaf switches are configured to export all local EVPN routes as type 5 EVPN ip-prefix routes as well.  This means that, for instance, LEAF3 learns /32 host routes for individual IPs in the Vlan100 subnet (198.18.100.0/24) through the L3VNI, without having the L2VNI for Vlan100 configured locally.  
+The Leaf switches are configured to export all local EVPN routes as type 5 EVPN ip-prefix routes.  This means that, for instance, LEAF3 learns /32 host routes for individual IPs in the Vlan100 subnet (198.18.100.0/24) through the L3VNI, without having the L2VNI for Vlan100 configured locally.  
 
 Looking at the overlay routing table on LEAF3 we can see examples of this, for the IP addresses configured on Server1 and Server2:
 
