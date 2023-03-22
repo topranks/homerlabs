@@ -64,7 +64,7 @@ root@debiantemp:~#
 ```
 
 &nbsp;  
-#### 5. Add cRPD image
+#### 5. Add cRPD container image
 
 For labs that require Juniper's [cRPD](https://www.juniper.net/documentation/us/en/software/crpd/crpd-deployment/topics/concept/understanding-crpd.html) we need to import the image Juniper provide to the local docker subsystem.  Download the tgz file and add it as follows:
 
