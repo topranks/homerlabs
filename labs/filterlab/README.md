@@ -8,7 +8,11 @@ TL;DR I didn't get the same thing on cRPD 19.4R1.10.  So probably a bug in the J
 
 ### Lab Overview
 
-3 simple containers.  1 cRPD to simualte the TATA internet router, another cRPD to simulate the CLouDINfra edge node, plus a Linux container if any tests are needed from a router 'inside' AS48635.
+3 containers are used in a very simple topology:
+
+- cRPD node to simualte the TATA internet router
+- cRPD node to simulate the CLouDINfra edge node
+- Linux node for any tests needed from 'inside' AS48635.
 
 ### Setup
 
