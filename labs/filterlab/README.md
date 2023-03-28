@@ -1,6 +1,6 @@
 # filterlab
 
-Lab to test the claims at https://www.daryllswer.com/navigating-a-bgp-zombie-outbreak-on-juniper-routers/
+Lab to test the config from https://www.daryllswer.com/navigating-a-bgp-zombie-outbreak-on-juniper-routers/
 
 TL;DR I didn't get the same thing on cRPD 19.4R1.10.  So probably a bug in the JunOS version in use in the blog.
 
