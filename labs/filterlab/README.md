@@ -89,4 +89,4 @@ inet.0: 11 destinations, 11 routes (11 active, 0 holddown, 0 hidden)
 * 5.157.80.0/21           Self                                    I
 ```
 
-So unsure what is happening in the blog, but that's not normal behaviour.  I've never seen it in any of my time using Juniper. I highly doubt a _large part of Zombie routes in the Default-free zone (DFZ) could be due to the bug_ as the blog speculates.  The idea that such a bug could go unnoticed in many software versions, used extensively by large service providers, for an extended period, and not be noticed is not realistic I feel.
+So unsure what is happening in the blog, but that's not normal behaviour.  I've never seen it in any of my time using Juniper. I highly doubt a _large part of Zombie routes in the Default-free zone (DFZ) could be due to the bug_ as the blog speculates.  The idea that a bug like that could go unnoticed for a long period of time, in multiple software versions used by large service providers, doesn't seem realistic.
