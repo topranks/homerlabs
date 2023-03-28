@@ -34,9 +34,9 @@ INFO[0001] Adding containerlab host entries to /etc/hosts file
 +---+------------------------+--------------+-------------+-------+---------+----------------+----------------------+
 ```
 
-#### 2. Configure container addressing.
+#### 2. Configure container addressing
 
-Run the attached `config_crpd.sh` script to add device IP addressing.
+Run the attached [config_crpd.sh](config_crpd.sh) script to add device IP addressing.
 
 #### 3. Configure the JunOS devices manually
 
