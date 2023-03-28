@@ -10,9 +10,9 @@ TL;DR I didn't get the same thing on cRPD 19.4R1.10.  So probably a bug in the J
 
 3 containers are used in a very simple topology:
 
-- cRPD node to simualte the TATA internet router
-- cRPD node to simulate the CLouDINfra edge node
-- Linux node for any tests needed from 'inside' AS48635.
+- cRPD node to simualte the TATA internet router (tata)
+- cRPD node to simulate the CLouDINfra edge node (r1)
+- Linux node for any tests needed from 'inside' AS48635 (server1)
 
 ### Setup
 
