@@ -75,10 +75,6 @@ inet.0: 11 destinations, 11 routes (11 active, 0 holddown, 0 hidden)
                     >  via eth1
 80.231.152.78/32   *[Local/0] 00:21:56
                        Local via eth1
-172.20.20.0/24     *[Direct/0] 00:29:51
-                    >  via eth0
-172.20.20.4/32     *[Local/0] 00:29:51
-                       Local via eth0
 ```
 
 But only the aggregates are announced to the dummy TATA router, matching the prefix-list used in the export policy:
