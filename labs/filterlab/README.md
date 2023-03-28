@@ -44,7 +44,7 @@ root@r1:/# cli
 root@r1>
 ```
 
-Configuration was not automated, 'set' command configs that can be applied to are saved in the `saved_configs` dir.
+Configuration was not automated, 'set' command configs that can be applied to are saved in the [saved_configs](saved_configs) dir.
 
 
 ### Results
