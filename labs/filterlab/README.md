@@ -2,6 +2,8 @@
 
 Lab to test the config from https://www.daryllswer.com/navigating-a-bgp-zombie-outbreak-on-juniper-routers/
 
+![filterlab topology](https://raw.githubusercontent.com/topranks/homerlabs/main/labs/filterlab/diagram.png)
+
 TL;DR I didn't get the same thing on cRPD 19.4R1.10.  So probably a bug in the JunOS version in use in the blog.
 
 ### Lab Overview
