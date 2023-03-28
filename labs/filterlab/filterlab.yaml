@@ -1,0 +1,28 @@
+name: filterlab
+mgmt:
+  network: filterlab
+  bridge: clab
+topology:
+  kinds:
+    crpd:
+      image: crpd:latest
+      license: /home/cathal/crpd.lic
+      binds:
+        - /home/cathal/homerlabs_ed25519.pub:/root/.ssh/authorized_keys
+    linux:
+      image: debian:clab
+      binds:
+        - /home/cathal/.ssh/homerlabs_ed25519.pub:/root/.ssh/authorized_keys
+
+  nodes:
+    tata:
+      kind: crpd
+    r1:
+      kind: crpd
+    server1:
+      kind: linux
+
+  links:
+    - endpoints: ["tata:eth1", "r1:eth1"]
+    - endpoints: ["r1:eth2", "server1:eth1"]
+
