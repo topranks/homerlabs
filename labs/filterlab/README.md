@@ -12,11 +12,33 @@ TL;DR I didn't get the same thing on cRPD 19.4R1.10.  So probably a bug in the J
 
 ### Setup
 
-#### 1. Configure container addressing.
+#### 1. Initiate the lab
+```
+cathal@officepc:~/homerlabs/labs/filterlab$ sudo clab deploy -t filterlab.yaml 
+INFO[0000] Containerlab v0.38.0 started                 
+INFO[0000] Parsing & checking topology file: filterlab.yaml 
+INFO[0000] Creating lab directory: /home/cathal/homerlabs/labs/filterlab/clab-filterlab 
+INFO[0000] Creating docker network: Name="filterlab", IPv4Subnet="172.20.20.0/24", IPv6Subnet="2001:172:20:20::/64", MTU="1500" 
+INFO[0000] Creating container: "server1"                
+INFO[0000] Creating container: "r1"                     
+INFO[0000] Creating container: "tata"                   
+INFO[0001] Creating virtual wire: r1:eth2 <--> server1:eth1 
+INFO[0001] Creating virtual wire: tata:eth1 <--> r1:eth1 
+INFO[0001] Adding containerlab host entries to /etc/hosts file 
++---+------------------------+--------------+-------------+-------+---------+----------------+----------------------+
+| # |          Name          | Container ID |    Image    | Kind  |  State  |  IPv4 Address  |     IPv6 Address     |
++---+------------------------+--------------+-------------+-------+---------+----------------+----------------------+
+| 1 | clab-filterlab-r1      | a7215224615b | crpd:latest | crpd  | running | 172.20.20.4/24 | 2001:172:20:20::4/64 |
+| 2 | clab-filterlab-server1 | 927df0a541cf | debian:clab | linux | running | 172.20.20.2/24 | 2001:172:20:20::2/64 |
+| 3 | clab-filterlab-tata    | 23a8b48244e3 | crpd:latest | crpd  | running | 172.20.20.3/24 | 2001:172:20:20::3/64 |
++---+------------------------+--------------+-------------+-------+---------+----------------+----------------------+
+```
+
+#### 2. Configure container addressing.
 
 Run the attached `config_crpd.sh` script to add device IP addressing.
 
-#### 2. Configure the JunOS devices manually
+#### 3. Configure the JunOS devices manually
 
 Get a shell in each of the cRPD devices:
 ```
