@@ -3,6 +3,7 @@ set -x
 sudo ip netns exec clab-filterlab-tata ip addr add 80.231.152.77/30 dev eth1
 
 sudo ip netns exec clab-filterlab-r1 ip addr add 80.231.152.78/30 dev eth1
+
 sudo ip netns exec clab-filterlab-r1 ip link add link eth2 name eth2.100 type vlan id 100
 sudo ip netns exec clab-filterlab-r1 ip link set dev eth2.100 up
 sudo ip netns exec clab-filterlab-r1 ip link add link eth2 name eth2.101 type vlan id 101
