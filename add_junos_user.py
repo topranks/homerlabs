@@ -66,9 +66,7 @@ def add_user_config(dev_name, dev_vars, pubkey):
     if dev_vars['kind'] == "vr-vqfx":
         device = Device(host=f"{dev_vars['ip']}", port=22, user="root", password="Juniper")
     else:
-        # device = Device(host=f"{dev_vars['ip']}", port=22, user="vmx_user", password="vmx_password")
-        print(f"{dev_name} is vMX - add from docker shell - don't know default password!")
-        return
+        device = Device(host=f"{dev_vars['ip']}", port=22, user="admin", password="admin@123")
 
     ssh_key_type = pubkey.split()[0]
 
