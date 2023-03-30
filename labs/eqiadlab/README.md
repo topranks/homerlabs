@@ -28,56 +28,12 @@ cd ~/homerlabs
 sudo ./add_fqdn_hosts.py
 ```
 
-##### 3. Add the SSH key we generated for the root user on vQFX devices
+##### 3. Add the SSH key we generated for the root user on vQFX/vMX devices
 ```
 sudo ./add_junos_user.py --user root --pubkey ~/.ssh/homerlabs_ed25519.pub 
 ```
 
-#### 4. Add user config to vMX devices manually
-
-The default user/pass for the vMX isn't clear, so we need to add our user manually.  For example for core1 (make sure to use your own SSH public key not the one shown below):
-```
-cathal@officepc:~$ sudo ip netns exec clab-eqiadlab-core1 telnet localhost 5000 
-Trying 127.0.0.1...
-Connected to localhost.
-Escape character is '^]'.
-
-root@:~ # cli
-root@core1> 
-
-root@core1> configure 
-Entering configuration mode
-
-[edit]
-root@core1# set system root-authentication ssh-ed25519 "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFyIygMcbB1dZpJodQCTd1kqhXWIWu2KKjztnxyq6KCX cathal@officepc" 
-
-[edit]
-root@core1# commit 
-commit complete
-
-[edit]
-root@core1# exit 
-Exiting configuration mode
-
-root@core1> 
-```
-
-We can exit the telnet session with CTRL + ], and then typing quit:
-```
-telnet> quit
-Connection closed.
-```
-
-After which we should be able to SSH:
-```
-cathal@officepc:~$ ssh -i ~/.ssh/homerlabs_ed25519 root@core1
-Last login: Tue Mar 21 23:31:31 2023 from 10.0.0.2
---- JUNOS 21.2R1.10 Kernel 64-bit  JNPR-12.1-20210529.2f59a40_buil
-root@core1> 
-```
-
-
-##### 5. Configure the JunOS devices with Homer:
+##### 4. Configure the JunOS devices with Homer:
 ```
 homer '*' commit "configure eqiadlab"
 ```
