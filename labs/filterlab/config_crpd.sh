@@ -18,4 +18,4 @@ sudo ip netns exec clab-filterlab-server1 ip link set dev eth1.100 up
 sudo ip netns exec clab-filterlab-server1 ip link set dev eth1.101 up
 sudo ip netns exec clab-filterlab-server1 ip addr flush dev eth1
 sudo ip netns exec clab-filterlab-server1 ip addr add 2.57.56.2/24 dev eth1.100
-sudo ip netns exec clab-filterlab-server1 ip addr add 5.187.80.1/24 dev eth1.101
+sudo ip netns exec clab-filterlab-server1 ip addr add 5.187.80.2/24 dev eth1.101
