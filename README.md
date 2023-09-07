@@ -19,6 +19,7 @@ The following labs are currently available.
 |[eqiadlab](labs/eqiadlab/README.md)|Same as evpnlab with two vMX added to represent core routers|
 |[esilab](labs/esilab/README.md)|Same as eqiadlab but with automation for ESI-LAG off two leaf switches|
 |[filterlab](labs/filterlab/README.md)|Simple cRPD lab without automation to test prefix-list behaviour|
+|[codfw_migrate](labs/codfw_migrate/README.md)|Lab to test migration of row-wide vlan / hosts from virtual-chassis to EVPN clos|
 
 ## How it works
 
