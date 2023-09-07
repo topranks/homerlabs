@@ -1,0 +1,165 @@
+CORE1:
+  role: core
+  site: codfw_migrate
+  config:
+    ip_ints:
+      "ge-0/0/0":
+        descr: "CORE2 ge-0/0/1"
+        ipv4: "198.18.11.0/31"
+      "ge-0/0/1":
+        descr: "SPINE1 xe-0/0/3"
+        subints:
+          100:
+            descr: "SPINE1 WMF_PROD VRF"
+            ipv4: "100.64.100.0/31"
+      "ge-0/0/2":
+        descr: "VCSW xe-0/0/0"
+        ipv4: "10.192.0.2/22"
+        ipv6: "2620:0:860:101::2/64"
+        vrrp:
+          group: 10
+          ipv4: "10.192.0.1"
+          ipv6: "2620:0:860:101::1"
+          priority: 110
+      "ge-0/0/3":
+        descr: "REMOTE1 eth1"
+        ipv4: "100.64.100.4/31"
+        ipv6: "2620:0:860:3:fe00::1/64"
+
+CORE2:
+  role: core
+  site: codfw_migrate
+  config:
+    ip_ints:
+      "ge-0/0/0":
+        descr: "CORE1 ge-0/0/1"
+        ipv4: "198.18.11.1/31"
+      "ge-0/0/1":
+        descr: "SPINE2 xe-0/0/3"
+        subints:
+          100:
+            descr: "SPINE2 WMF_PROD VRF"
+            ipv4: "100.64.100.2/31"
+      "ge-0/0/2":
+        descr: "VCSW xe-0/0/1"
+        ipv4: "10.192.0.3/22"
+        ipv6: "2620:0:860:101::3/64"
+        vrrp:
+          group: 10
+          ipv4: "10.192.0.1"
+          ipv6: "2620:0:860:101::1"
+          priority: 90
+      "ge-0/0/3":
+        descr: "REMOTE2 eth1"
+        ipv4: "100.64.100.6/31"
+        ipv6: "2620:0:860:4:fe00::1/64"
+
+SPINE1:
+  role: spine
+  site: codfw_migrate
+  config:
+    ip_ints:
+      "xe-0/0/3":
+        descr: "CORE1 ge-0/0/1"
+        subints:
+          100:
+            ipv4: "100.64.100.1/31"
+    lags:
+      "ae0":
+        ports:
+          xe-0/0/2: "VCSW xe-0/0/2"
+        sys_id: "01:02:00:00:00:01"
+    vlan_ports:
+      access:
+        "ae0":
+          descr: "VCSW ae0"
+          vlan: VLAN100
+    vlan_ints:
+      VLAN100:
+        ipv4: "10.192.0.4/22"
+        ipv6: "2620:0:860:101::4/64"
+
+
+SPINE2:
+  role: spine
+  site: codfw_migrate
+  config:
+    ip_ints:
+      "xe-0/0/3":
+        descr: "CORE2 ge-0/0/1"
+        subints:
+          100:
+            ipv4: "100.64.100.3/31"
+    lags:
+      "ae0":
+        ports:
+          xe-0/0/2: "VCSW xe-0/0/3"
+        sys_id: "01:02:00:00:00:01"
+    vlan_ports:
+      access:
+        "ae0":
+          descr: "VCSW ae0"
+          vlan: VLAN100
+    vlan_ints:
+      VLAN100:
+        ipv4: "10.192.0.5/22"
+        ipv6: "2620:0:860:101::5/64"
+
+LEAF1:
+  role: leaf
+  site: codfw_migrate
+  config:
+    vlan_ports:
+      access:
+        "xe-0/0/2":
+          descr: "SERVER1 eth0"
+          vlan: VLAN100
+    vlan_ints:
+      VLAN100:
+        ipv4: "10.192.0.6/22"
+        ipv6: "2620:0:860:101::6/64"
+      
+LEAF2:
+  role: leaf
+  site: codfw_migrate
+  config:
+    vlan_ports:
+      access:
+        "ae0":
+          descr: "SERVER1 ae0"
+          vlan: VLAN100
+        "xe-0/0/3":
+          descr: "SERVER3 eth1"
+          vlan: VLAN100
+    vlan_ints:
+      VLAN100:
+        ipv4: "10.192.0.7/22"
+        ipv6: "2620:0:860:101::7/64"
+
+VCSW:
+  role: basicsw
+  site: codfw_migrate
+  config:
+    lags:
+      "ae0":
+        ports:
+          xe-0/0/2: "SPINE1 xe-0/0/2"
+          xe-0/0/3: "SPINE2 xe-0/0/2"
+    vlan_ports: 
+      access:
+        "ae0":
+          descr: "SPINES MC-LAG ae0"
+          vlan: VLAN100
+        "xe-0/0/0":
+          descr: "CORE1 ge-0/0/2"
+          vlan: VLAN100
+        "xe-0/0/1":
+          descr: "CORE2 ge-0/0/2"
+          vlan: VLAN100
+        "xe-0/0/4":
+          descr: "SERVER1 eth1"
+          vlan: VLAN100
+        "xe-0/0/5":
+          descr: "SERVER2 eth1"
+          vlan: VLAN100
+
