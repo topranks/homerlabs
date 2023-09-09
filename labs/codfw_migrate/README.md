@@ -12,3 +12,11 @@ Two servers are connected to the vcsw.  Because it is difficult to move cables i
 
 Similar to the server move to simulate disconnecting the vcsw from core routers, and moving them to the SPINEs, the links to the cores will instead be shut down before the separate links to the SPINEs brought up.
 
+### IP GW Migration
+
+Vlan 100 is used to simulate a vlan on the VC switch, which we want to bridge into the LEAF/SPINE devices which are configured to use VXLAN/EVPN.  In the real world we will disconnect the VC switch links to the core routers, and move them to the Spine switches.  For the purpose of the lab we have separate connections between devices, as "moving" links is difficult in this context.  In the lab we'll instead shut down one link, and bring up the other, to simulate cable moves.
+
+#### Initial setup
+
+At the start of the process the VC switch is connected to both core routers, which have a shared VRRP VIP GW for Vlan100 of 10.192.0.1.  Core1 is VRRP master:
+
