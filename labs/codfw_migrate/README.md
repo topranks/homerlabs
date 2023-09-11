@@ -2,7 +2,7 @@
 
 ![codfw_migrate topology](https://raw.githubusercontent.com/topranks/homerlabs/main/labs/codfw_migrate/diagram.png)
 
-### Overview
+## Overview
 
 This is a containerlab topology, expanding on [esilab](../esilab), which I used to test a miration of from virtual-chassis based row-wide vlans to EVPN based simulating the kind of move required in codfw row A/B.  
 
@@ -12,11 +12,11 @@ Two servers are connected to the vcsw.  Because it is difficult to move cables i
 
 Similar to the server move to simulate disconnecting the vcsw from core routers, and moving them to the SPINEs, the links to the cores will instead be shut down before the separate links to the SPINEs brought up.
 
-### IP GW Migration
+## IP GW Migration
 
 Vlan 100 is used to simulate a vlan on the VC switch, which we want to bridge into the LEAF/SPINE devices which are configured to use VXLAN/EVPN.  In the real world we will disconnect the VC switch links to the core routers, and move them to the Spine switches.  For the purpose of the lab we have separate connections between devices, as "moving" links is difficult in this context.  In the lab we'll instead shut down one link, and bring up the other, to simulate cable moves.
 
-#### Strategy
+### Strategy
 
 The key concern when moving the gateway IPs (v4 and v6) for the subnet is that end-hosts may have cached ARP/ND entries which associate the GW IP with a specific MAC.  In this case the VRRP virtual MAC shared by the two core routers.  This MAC is used as the destination address in the Ethernet header hosts on the vlan use to reach systems outside the local subnet.
 
@@ -32,7 +32,7 @@ In VRRP the MAC is created based on the VRRP group ID configured on participatin
    ** After which all hosts will be sending outbound traffic to the Anycast MAC / Spines
 5. Move the remaining virtual-chassis link from CORE1 to SPINE2, taking the CORE routers completely out of the Vlan.
 
-#### Initial state
+### Initial state
 
 At the start of the process the VC switch is connected to both core routers, and both links from it to the SPINEs are down:
 ```
@@ -161,4 +161,10 @@ HOST: remote2                     Loss%   Snt   Last   Avg  Best  Wrst StDev
   1.|-- 2620:0:860:4:fe00::1       0.0%     3    0.9   0.8   0.7   0.9   0.1
   2.|-- 2620:0:860:101::11         0.0%     3  102.5 132.5 102.5 192.3  51.8
 ```
+
+### Migration Steps
+
+#### Step 1: Simulate move of VCSW link to CORE2 to SPINE2
+
+Due to lack of free ports on the real virtual-chassis switches we cannot pre-cable them to the newly installed SPINE devices.  So we will disconnect one link from ASW -> CRs first, connect that to a SPINE switch, migrate the IP gateway, then move the other link from ASW to SPINEs.
 
