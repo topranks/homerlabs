@@ -32,7 +32,100 @@ In VRRP the MAC is created based on the VRRP group ID configured on participatin
    ** After which all hosts will be sending outbound traffic to the Anycast MAC / Spines
 5. Move the remaining virtual-chassis link from CORE1 to SPINE2, taking the CORE routers completely out of the Vlan.
 
-#### Initial setup
+#### Initial state
 
-At the start of the process the VC switch is connected to both core routers, which have a shared VRRP VIP GW for Vlan100 of 10.192.0.1.  Core1 is VRRP master:
+At the start of the process the VC switch is connected to both core routers, and both links from it to the SPINEs are down:
+```
+root@VCSW> show interfaces descriptions 
+Interface       Admin Link Description
+xe-0/0/0        up    up   CORE1 ge-0/0/2
+xe-0/0/1        up    up   CORE2 ge-0/0/2
+xe-0/0/2        down  down SPINE1 xe-0/0/2
+xe-0/0/3        down  down SPINE2 xe-0/0/2
+xe-0/0/4        up    up   SERVER1 eth1
+xe-0/0/5        up    up   SERVER2 eth1
+ae0             up    down SPINES MC-LAG ae0
+em1             up    up   LINK TO vQFX PFE
+```
 
+The core routers are both connected to the VCSW and are sharing a VRRP VIP of 10.192.0.1 / 2620:0:860:101::1 which is the gateway for hosts on Vlan 100.  Core1 is VRRP master:
+```
+root@core1> show vrrp summary 
+Interface     State       Group   VR state       VR Mode    Type   Address 
+ge-0/0/2.0    up             10   master          Active    lcl    10.192.0.2         
+                                                            vip    10.192.0.1         
+ge-0/0/2.0    up             10   master          Active    lcl    2620:0:860:101::2  
+                                                            vip    fe80::200:5eff:fe00:20a
+                                                            vip    2620:0:860:101::1  
+```
+```
+root@core2> show vrrp summary 
+Interface     State       Group   VR state       VR Mode    Type   Address 
+ge-0/0/2.0    up             10   backup          Active    lcl    10.192.0.3         
+                                                            vip    10.192.0.1         
+ge-0/0/2.0    up             10   backup          Active    lcl    2620:0:860:101::3  
+                                                            vip    fe80::200:5eff:fe00:20a
+                                                            vip    2620:0:860:101::1  
+```
+
+Server1 is connected to this vlan, using IP 10.192.0.11 / 2620:0:860:101::11:
+
+```
+root@server1:~# ip -br addr show dev eth1 
+eth1@if80        UP             10.192.0.11/22 2620:0:860:101::11/64
+```
+
+It's default gateway is set to the VRRP VIP of the cores:
+```
+root@server1:~# ip route show default 
+default via 10.192.0.1 dev eth1 
+root@server1:~# 
+root@server1:~# 
+root@server1:~# ip -6 route show default 
+default via 2620:0:860:101::1 dev eth1 metric 1024 pref medium
+```
+
+And if we look at the ARP / ND table we can see the VRRP virtual MACs are assocaited with the gateway IPs currently:
+
+```
+root@server1:~# ip neigh show 10.192.0.1 
+10.192.0.1 dev eth1 lladdr 00:00:5e:00:01:0a REACHABLE
+root@server1:~# 
+root@server1:~# 
+root@server1:~# ip neigh show 2620:0:860:101::1
+2620:0:860:101::1 dev eth1 lladdr 00:00:5e:00:02:0a router REACHABLE
+```
+
+This allows us to get to each of the remote servers.  Traffic to remote1 hits CORE1 as it is VRRP master and goes directly out to it:
+```
+root@server1:~# mtr -n -r -c 3 100.64.100.5
+Start: 2023-09-11T20:39:23+0000
+HOST: server1                     Loss%   Snt   Last   Avg  Best  Wrst StDev
+  1.|-- 10.192.0.2                 0.0%     3  101.1 100.8 100.7 101.1   0.3
+  2.|-- 100.64.100.5               0.0%     3  100.7 134.0 100.6 200.6  57.7
+root@server1:~# 
+root@server1:~# 
+root@server1:~# mtr -6 -n -r -c 3 2620:0:860:3:fe00::2
+Start: 2023-09-11T20:40:12+0000
+HOST: server1                     Loss%   Snt   Last   Avg  Best  Wrst StDev
+  1.|-- 2620:0:860:101::2          0.0%     3  108.0 106.0 101.6 108.3   3.8
+  2.|-- 2620:0:860:3:fe00::2       0.0%     3  101.6 134.7 101.1 201.4  57.8
+```
+
+For remote2 traffic still goes via CORE1 (VRRP master), but then uses the direct link to CORE2 and out:
+```
+root@server1:~# mtr -n -r -c 3 100.64.100.7
+Start: 2023-09-11T20:39:13+0000
+HOST: server1                     Loss%   Snt   Last   Avg  Best  Wrst StDev
+  1.|-- 10.192.0.2                 0.0%     3  100.7 100.9 100.6 101.3   0.4
+  2.|-- 198.18.11.1                0.0%     3  153.2 151.7 101.1 200.9  49.9
+  3.|-- 100.64.100.7               0.0%     3  100.7 134.0 100.5 200.8  57.9
+root@server1:~# 
+root@server1:~# 
+root@server1:~# mtr -6 -n -r -c 3 2620:0:860:4:fe00::2
+Start: 2023-09-11T20:41:56+0000
+HOST: server1                     Loss%   Snt   Last   Avg  Best  Wrst StDev
+  1.|-- 2620:0:860:101::2          0.0%     3  100.8 129.6 100.8 187.1  49.8
+  2.|-- 2620:0:860:5:fe00::2       0.0%     3  191.3 192.7 187.0 199.8   6.5
+  3.|-- 2620:0:860:4:fe00::2       0.0%     3  100.7 129.3 100.4 186.9  49.9
+```
