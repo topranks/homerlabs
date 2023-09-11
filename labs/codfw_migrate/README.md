@@ -48,7 +48,7 @@ ae0             up    down SPINES MC-LAG ae0
 em1             up    up   LINK TO vQFX PFE
 ```
 
-The core routers are both connected to the VCSW and are sharing a VRRP VIP of 10.192.0.1 / 2620:0:860:101::1 which is the gateway for hosts on Vlan 100.  Core1 is VRRP master:
+The core routers are both connected to the VCSW and are sharing VRRP VIPs of 10.192.0.1 / 2620:0:860:101::1, the IP gateways for hosts on Vlan 100.  Core1 is VRRP master:
 ```
 root@core1> show vrrp summary 
 Interface     State       Group   VR state       VR Mode    Type   Address 
