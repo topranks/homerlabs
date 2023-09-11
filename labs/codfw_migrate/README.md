@@ -6,11 +6,11 @@
 
 This is a containerlab topology, expanding on [esilab](../esilab), which I used to test a miration of from virtual-chassis based row-wide vlans to EVPN based simulating the kind of move required in codfw row A/B.  
 
-A single vQFX node, **vcsw**, is used to represent the virtual-chassis (for the purpose of the lab simulating a VC is not required).  Two vMX nodes simulate our two core routers, and a further 4 vQFX act as a basic spine/leaf running EVPN.  
+A single vQFX node, **ASW**, is used to represent the virtual-chassis (for the purpose of the lab simulating a VC is not required).  Two vMX nodes simulate our two core routers, and a further 4 vQFX act as a basic spine/leaf running EVPN.  
 
-Two servers are connected to the vcsw.  Because it is difficult to move cables in containerlab while running, two more with similar names are connected to the LEAF devices.  Server moves will then be simulated by configuring the same MAC/IP addressing on, for instance, server1 and server1_b, then shutting the link to server1 and bringing the link to server1_b up.  The server nodes are basic debian-based Linux containers with BIRD installed.  Two additional nodes, remote1 and remote2, are included to act as a source/destination outside the WMF network / rows in question.  These are also plain linux containers.
+Two servers are connected to the ASW.  Because it is difficult to move cables in containerlab while running, two more with similar names are connected to the LEAF devices.  Server moves will then be simulated by configuring the same MAC/IP addressing on, for instance, server1 and server1_b, then shutting the link to server1 and bringing the link to server1_b up.  The server nodes are basic debian-based Linux containers with BIRD installed.  Two additional nodes, remote1 and remote2, are included to act as a source/destination outside the WMF network / rows in question.  These are also plain linux containers.
 
-Similar to the server move to simulate disconnecting the vcsw from core routers, and moving them to the SPINEs, the links to the cores will instead be shut down before the separate links to the SPINEs brought up.
+Similar to the server move to simulate disconnecting the ASW from core routers, and moving them to the SPINEs, the links to the cores will instead be shut down before the separate links to the SPINEs brought up.
 
 ## IP GW Migration
 
@@ -36,7 +36,7 @@ In VRRP the MAC is created based on the VRRP group ID configured on participatin
 
 At the start of the process the VC switch is connected to both core routers, and both links from it to the SPINEs are down:
 ```
-root@VCSW> show interfaces descriptions 
+root@ASW> show interfaces descriptions 
 Interface       Admin Link Description
 xe-0/0/0        up    up   CORE1 ge-0/0/2
 xe-0/0/1        up    up   CORE2 ge-0/0/2
@@ -48,7 +48,7 @@ ae0             up    down SPINES MC-LAG ae0
 em1             up    up   LINK TO vQFX PFE
 ```
 
-The core routers are both connected to the VCSW and are sharing VRRP VIPs of 10.192.0.1 / 2620:0:860:101::1, the IP gateways for hosts on Vlan 100.  Core1 is VRRP master:
+The core routers are both connected to the ASW and are sharing VRRP VIPs of 10.192.0.1 / 2620:0:860:101::1, the IP gateways for hosts on Vlan 100.  Core1 is VRRP master:
 ```
 root@core1> show vrrp summary 
 Interface     State       Group   VR state       VR Mode    Type   Address 
@@ -146,7 +146,7 @@ HOST: remote1                     Loss%   Snt   Last   Avg  Best  Wrst StDev
   2.|-- 2620:0:860:101::11         0.0%     3  102.0 105.3 101.6 112.2   6.0
 ```
 
-Traffic from remote2 goes out via its link to CORE2, but then it goes directly to the VCSW and out to server1 as it is directly connected to the vlan.
+Traffic from remote2 goes out via its link to CORE2, but then it goes directly to the ASW and out to server1 as it is directly connected to the vlan.
 ```
 root@remote2:~# mtr -n -r -c 3 10.192.0.11
 Start: 2023-09-11T19:48:26+0000
@@ -164,7 +164,7 @@ HOST: remote2                     Loss%   Snt   Last   Avg  Best  Wrst StDev
 
 ### Migration Steps
 
-#### Step 1: Simulate move of VCSW link to CORE2 to SPINE2
+#### Step 1: Simulate move of ASW link to CORE2 to SPINE2
 
 Due to lack of free ports on the real virtual-chassis switches we cannot pre-cable them to the newly installed SPINE devices.  So we will disconnect one link from ASW -> CRs first, connect that to a SPINE switch, migrate the IP gateway, then move the other link from ASW to SPINEs.
 
