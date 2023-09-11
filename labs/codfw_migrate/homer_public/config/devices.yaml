@@ -15,7 +15,7 @@ CORE1:
             ipv4: "100.64.100.0/31"
             ipv6: "2620:0:860:6:fe00::1/64"
       "ge-0/0/2":
-        descr: "VCSW xe-0/0/0"
+        descr: "ASW xe-0/0/0"
         ipv4: "10.192.0.2/22"
         ipv6: "2620:0:860:101::2/64"
         vrrp:
@@ -50,7 +50,7 @@ CORE2:
             ipv4: "100.64.100.2/31"
             ipv6: "2620:0:860:7:fe00::1/64"
       "ge-0/0/2":
-        descr: "VCSW xe-0/0/1"
+        descr: "ASW xe-0/0/1"
         ipv4: "10.192.0.3/22"
         ipv6: "2620:0:860:101::3/64"
         vrrp:
@@ -82,12 +82,12 @@ SPINE1:
     lags:
       "ae0":
         ports:
-          xe-0/0/2: "VCSW xe-0/0/2"
+          xe-0/0/2: "ASW xe-0/0/2"
         sys_id: "01:02:00:00:00:01"
     vlan_ports:
       access:
         "ae0":
-          descr: "VCSW ae0"
+          descr: "ASW ae0"
           vlan: VLAN100
     vlan_ints:
       VLAN100:
@@ -125,12 +125,12 @@ SPINE2:
     lags:
       "ae0":
         ports:
-          xe-0/0/2: "VCSW xe-0/0/3"
+          xe-0/0/2: "ASW xe-0/0/3"
         sys_id: "01:02:00:00:00:01"
     vlan_ports:
       access:
         "ae0":
-          descr: "VCSW ae0"
+          descr: "ASW ae0"
           vlan: VLAN100
     vlan_ints:
       VLAN100:
@@ -182,7 +182,7 @@ LEAF2:
         ipv4: "10.192.0.7/22"
         ipv6: "2620:0:860:101::7/64"
 
-VCSW:
+ASW:
   role: basicsw
   site: codfw_migrate
   config:

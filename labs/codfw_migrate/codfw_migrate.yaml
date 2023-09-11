@@ -22,7 +22,7 @@ topology:
     spine2:
       kind: vr-vqfx
       image: vrnetlab/vr-vqfx:20.2R1.10
-    vcsw:
+    asw:
       kind: vr-vqfx
       image: vrnetlab/vr-vqfx:20.2R1.10
 
@@ -53,9 +53,9 @@ topology:
     - endpoints: ['core1:eth2', 'spine1:eth4']
     - endpoints: ['core2:eth2', 'spine2:eth4']
 
-    # core - vcsw
-    - endpoints: ['core1:eth3', 'vcsw:eth1']
-    - endpoints: ['core2:eth3', 'vcsw:eth2']
+    # core - asw
+    - endpoints: ['core1:eth3', 'asw:eth1']
+    - endpoints: ['core2:eth3', 'asw:eth2']
 
     # spine1 - leaf
     - endpoints: ["spine1:eth1", "leaf1:eth1"]
@@ -65,13 +65,13 @@ topology:
     - endpoints: ["spine2:eth1", "leaf1:eth2"]
     - endpoints: ["spine2:eth2", "leaf2:eth2"]
 
-    # vcsw - spine
-    - endpoints: ['spine1:eth3', 'vcsw:eth3']
-    - endpoints: ['spine2:eth3', 'vcsw:eth4']
+    # asw - spine
+    - endpoints: ['spine1:eth3', 'asw:eth3']
+    - endpoints: ['spine2:eth3', 'asw:eth4']
 
     # Row server connections
-    - endpoints: ["server1:eth1", "vcsw:eth5"]
-    - endpoints: ["server2:eth1", "vcsw:eth6"]
+    - endpoints: ["server1:eth1", "asw:eth5"]
+    - endpoints: ["server2:eth1", "asw:eth6"]
     - endpoints: ["server1_b:eth1", "leaf1:eth3"]
     - endpoints: ["server2_b:eth1", "leaf2:eth3"]
 
