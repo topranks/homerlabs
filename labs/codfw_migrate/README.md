@@ -129,3 +129,36 @@ HOST: server1                     Loss%   Snt   Last   Avg  Best  Wrst StDev
   2.|-- 2620:0:860:5:fe00::2       0.0%     3  191.3 192.7 187.0 199.8   6.5
   3.|-- 2620:0:860:4:fe00::2       0.0%     3  100.7 129.3 100.4 186.9  49.9
 ```
+
+Traffic from remote1 back to server1 takes the same path in reverse:
+```
+root@remote1:~# mtr -n -r -c 3 10.192.0.11
+Start: 2023-09-11T19:46:48+0000
+HOST: remote1                     Loss%   Snt   Last   Avg  Best  Wrst StDev
+  1.|-- 100.64.100.4               0.0%     3    0.6   0.6   0.6   0.7   0.1
+  2.|-- 10.192.0.11                0.0%     3  102.1 134.8 102.0 200.4  56.8
+root@remote1:~# 
+root@remote1:~# 
+root@remote1:~# mtr -n -r -c 3 2620:0:860:101::11
+Start: 2023-09-11T19:47:18+0000
+HOST: remote1                     Loss%   Snt   Last   Avg  Best  Wrst StDev
+  1.|-- 2620:0:860:3:fe00::1       0.0%     3    0.5   3.7   0.5   9.9   5.4
+  2.|-- 2620:0:860:101::11         0.0%     3  102.0 105.3 101.6 112.2   6.0
+```
+
+Traffic from remote2 goes out via its link to CORE2, but then it goes directly to the VCSW and out to server1 as it is directly connected to the vlan.
+```
+root@remote2:~# mtr -n -r -c 3 10.192.0.11
+Start: 2023-09-11T19:48:26+0000
+HOST: remote2                     Loss%   Snt   Last   Avg  Best  Wrst StDev
+  1.|-- 100.64.100.6               0.0%     3    0.7   0.6   0.5   0.7   0.1
+  2.|-- 10.192.0.11                0.0%     3  150.5 119.2 102.5 150.5  27.1
+root@remote2:~# 
+root@remote2:~# 
+root@remote2:~# mtr -n -r -c 3 2620:0:860:101::11
+Start: 2023-09-11T20:03:53+0000
+HOST: remote2                     Loss%   Snt   Last   Avg  Best  Wrst StDev
+  1.|-- 2620:0:860:4:fe00::1       0.0%     3    0.9   0.8   0.7   0.9   0.1
+  2.|-- 2620:0:860:101::11         0.0%     3  102.5 132.5 102.5 192.3  51.8
+```
+
