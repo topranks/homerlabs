@@ -6,12 +6,14 @@ CORE1:
       "ge-0/0/0":
         descr: "CORE2 ge-0/0/1"
         ipv4: "198.18.11.0/31"
+        ipv6: "2620:0:860:5:fe00::1/64"
       "ge-0/0/1":
         descr: "SPINE1 xe-0/0/3"
         subints:
           100:
             descr: "SPINE1 WMF_PROD VRF"
             ipv4: "100.64.100.0/31"
+            ipv6: "2620:0:860:6:fe00::1/64"
       "ge-0/0/2":
         descr: "VCSW xe-0/0/0"
         ipv4: "10.192.0.2/22"
@@ -25,6 +27,11 @@ CORE1:
         descr: "REMOTE1 eth1"
         ipv4: "100.64.100.4/31"
         ipv6: "2620:0:860:3:fe00::1/64"
+    switch_neighbors:
+      ipv4:
+        SPINE1: 100.64.100.1
+      ipv6:
+        SPINE1: 2620:0:860:6:fe00::2
 
 CORE2:
   role: core
@@ -34,12 +41,14 @@ CORE2:
       "ge-0/0/0":
         descr: "CORE1 ge-0/0/1"
         ipv4: "198.18.11.1/31"
+        ipv6: "2620:0:860:5:fe00::2/64"
       "ge-0/0/1":
         descr: "SPINE2 xe-0/0/3"
         subints:
           100:
             descr: "SPINE2 WMF_PROD VRF"
             ipv4: "100.64.100.2/31"
+            ipv6: "2620:0:860:7:fe00::1/64"
       "ge-0/0/2":
         descr: "VCSW xe-0/0/1"
         ipv4: "10.192.0.3/22"
@@ -53,6 +62,11 @@ CORE2:
         descr: "REMOTE2 eth1"
         ipv4: "100.64.100.6/31"
         ipv6: "2620:0:860:4:fe00::1/64"
+    switch_neighbors:
+      ipv4:
+        SPINE2: 100.64.100.3
+      ipv6:
+        SPINE2: 2620:0:860:7:fe00::2
 
 SPINE1:
   role: spine
@@ -64,6 +78,7 @@ SPINE1:
         subints:
           100:
             ipv4: "100.64.100.1/31"
+            ipv6: "2620:0:860:6:fe00::2/64"
     lags:
       "ae0":
         ports:
@@ -78,7 +93,23 @@ SPINE1:
       VLAN100:
         ipv4: "10.192.0.4/22"
         ipv6: "2620:0:860:101::4/64"
-
+    device_bgp:
+      routing_instance:
+        WMF_PROD:
+          groups:
+            CORE_ROUTERS4:
+              export: "EXT_OUT"
+              peers:
+                "100.64.100.0":
+                  descr: CORE1
+                  peer_as: 14907
+          v6_groups:
+            CORE_ROUTERS6:
+              export: "EXT_OUT"
+              peers:
+                "2620:0:860:6:fe00::1":
+                  descr: CORE1
+                  peer_as: 14907
 
 SPINE2:
   role: spine
@@ -90,6 +121,7 @@ SPINE2:
         subints:
           100:
             ipv4: "100.64.100.3/31"
+            ipv6: "2620:0:860:7:fe00::2/64"
     lags:
       "ae0":
         ports:
@@ -104,6 +136,23 @@ SPINE2:
       VLAN100:
         ipv4: "10.192.0.5/22"
         ipv6: "2620:0:860:101::5/64"
+    device_bgp:
+      routing_instance:
+        WMF_PROD:
+          groups:
+            CORE_ROUTERS4:
+              export: "EXT_OUT"
+              peers:
+                "100.64.100.2":
+                  descr: CORE2
+                  peer_as: 14907
+          v6_groups:
+            CORE_ROUTERS6:
+              export: "EXT_OUT"
+              peers:
+                "2620:0:860:7:fe00::1":
+                  descr: CORE2
+                  peer_as: 14907
 
 LEAF1:
   role: leaf
@@ -112,7 +161,7 @@ LEAF1:
     vlan_ports:
       access:
         "xe-0/0/2":
-          descr: "SERVER1 eth0"
+          descr: "SERVER1b eth0"
           vlan: VLAN100
     vlan_ints:
       VLAN100:
@@ -125,11 +174,8 @@ LEAF2:
   config:
     vlan_ports:
       access:
-        "ae0":
-          descr: "SERVER1 ae0"
-          vlan: VLAN100
-        "xe-0/0/3":
-          descr: "SERVER3 eth1"
+        "xe-0/0/2":
+          descr: "SERVER2b eth1"
           vlan: VLAN100
     vlan_ints:
       VLAN100:
