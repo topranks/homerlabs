@@ -22,15 +22,15 @@ The key concern when moving the gateway IPs (v4 and v6) for the subnet is that e
 
 In VRRP the MAC is created based on the VRRP group ID configured on participating hosts.  That means regardless of what IP is configured as the VRRP VIP on (for example) group 10, the virtual MAC will be the same.  Knowing that is the case we can thus change the VRRP VIP on the core routers, while keeping the virtual MAC "alive".  In other words the VRRP VIP can change, but the core routers will continue to process frames sent to the virtual MAC, and the MAC will continue to be in the L2 forwarding tables of all devices on the Vlan.  We can use this property to give us a window, during which end-hosts may have either the old or new MAC for the subnet's gateway in their ARP/ND cache, and still ensure all packets are forwarded.  Roughly speaking the steps are as follows:
 
-1. Enable the IRB / Anycast GW interface on the SPINE switches so that they will answer ARP/ND queries for the GW IP
+1. Move the virtual-chassis link that connects to CORE2 to SPINE1, bridging the Vlan to SPINE1 / VXLAN fabirc.
+2. Enable the IRB / Anycast GW interface on the SPINE switches so they begin to answer ARP/ND queries for the GW IP
   ** At this point there is an IP conflict on the network, devices may get either the VRRP or Anycast GW MAC if they ARP/ND for the gateway.
-2. Change the VRRP VIP on the core routers so they no longer answer ARP/ND queries for the GW IP
+3. Change the VRRP VIP on the core routers so they no longer answer ARP/ND queries for the GW IP
    ** At this point anything that ARPs for the GW will get the Anycast MAC belonging to the Spines
    ** Traffic sent to the VRRP MAC by hosts with cached entry will still be forwarded by the cores, however
-3. Wait to ARP to expire or force update the ARP cache on end hosts
+4. Wait for ARP/ND to expire or force update the ARP/ND cache on end hosts
    ** After which all hosts will be sending outbound traffic to the Anycast MAC / Spines
-5. Remove the other virtual-chassis link to the Cores, connecting it to Spine2 for redundancy.
-
+5. Move the remaining virtual-chassis link from CORE1 to SPINE2, taking the CORE routers completely out of the Vlan.
 
 #### Initial setup
 
