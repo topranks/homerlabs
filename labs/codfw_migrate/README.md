@@ -313,7 +313,7 @@ Routing instance : default-switch
    VLAN100             aa:c1:ab:94:c6:f1   D        xe-0/0/2.0           
 ```
 
-Taking a look in the EVPN database for a given MAC show's that it is reachable via CORE2 using VXLAN:
+Taking a look in the EVPN database for a given MAC show's that 2.2.2.2 (CORE2) is the only member of this ESI right now:
 ```
 root@LEAF2> show evpn database extensive mac-address aa:c1:ab:16:40:89 
 Instance: default-switch
