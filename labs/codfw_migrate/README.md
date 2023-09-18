@@ -22,15 +22,20 @@ The key concern when moving the gateway IPs (v4 and v6) for the subnet is that e
 
 In VRRP the MAC is created based on the VRRP group ID configured on participating hosts.  That means regardless of what IP is configured as the VRRP VIP on (for example) group 10, the virtual MAC will be the same.  Knowing that is the case we can thus change the VRRP VIP on the core routers, while keeping the virtual MAC "alive".  In other words the VRRP VIP can change, but the core routers will continue to process frames sent to the virtual MAC, and the MAC will continue to be in the L2 forwarding tables of all devices on the Vlan.  We can use this property to give us a window, during which end-hosts may have either the old or new MAC for the subnet's gateway in their ARP/ND cache, and still ensure all packets are forwarded.  Roughly speaking the steps are as follows:
 
-1. Move the virtual-chassis link that connects to CORE2 to SPINE1, bridging the Vlan to SPINE1 / VXLAN fabirc.
-2. Enable the IRB / Anycast GW interface on the SPINE switches so they begin to answer ARP/ND queries for the GW IP
+1. Move the virtual-chassis link that connects to CORE2 to SPINE2, bridging the Vlan to SPINE2 / VXLAN fabirc.
+2. Enable the IRB / Anycast GW interface on SPINE2 so it begins to answer ARP/ND queries for the GW IP
   ** At this point there is an IP conflict on the network, devices may get either the VRRP or Anycast GW MAC if they ARP/ND for the gateway.
-3. Change the VRRP VIP on the core routers so they no longer answer ARP/ND queries for the GW IP
+4. Change the VRRP VIP on the core routers so they no longer answer ARP/ND queries for the GW IP
    ** At this point anything that ARPs for the GW will get the Anycast MAC belonging to the Spines
    ** Traffic sent to the VRRP MAC by hosts with cached entry will still be forwarded by the cores, however
-4. Wait for ARP/ND to expire or force update the ARP/ND cache on end hosts
+5. Enable IPv6 RAs for the Vlan on SPINE2
+   ** This creates another conflict, with the CRs and SPINE2 sending RAs with different MACs
+8. Disable IPv6 RA generation on the CRs
+   ** Meaning only SPINE2 is sending RAs into the Vlan
+7. Wait for ARP/ND to expire or force update the ARP/ND cache on end hosts
    ** After which all hosts will be sending outbound traffic to the Anycast MAC / Spines
-5. Move the remaining virtual-chassis link from CORE1 to SPINE2, taking the CORE routers completely out of the Vlan.
+8. Wait for hosts to add new default upon receipt of RA from SPINE2, and wait for old default from CRs to time out
+9. Move the remaining virtual-chassis link from CORE1 to SPINE2, taking the CORE routers completely out of the Vlan.
 
 ### Initial state
 
@@ -342,5 +347,56 @@ VN Identifier: 100000, MAC address: aa:c1:ab:16:40:89
       Sep 11 21:21:05 2023  00:00:00:00:01:02:00:00:00:01 : Updating output state (change flags 0x400000800 <IP-Added ESI-Remote-Peer-Com-Chg>)
       Sep 11 21:21:10 2023  00:00:00:00:01:02:00:00:00:01 : Updating output state (change flags 0x400000800 <IP-Added ESI-Remote-Peer-Com-Chg>)
 ```
+
+##### Step 3: Bring up IRB interface on SPINE2
+
+Now we can enable the IRB interface on SPINE2, with the GW IP 10.192.0.1 on it.  The result of this step is to have two systems in the Vlan configured for the GW IP, a situation which is far from ideal.  The impact is that when a host ARPs for its gateway there is a race and one or other ARP response will make it back to the host first.  So a host can cache the VRRP MAC (CRs) or Anycast GW MAC (SPINE2) as the gateway during this time.  The imporant fact is that whichever of them are cached a host can send Ethernet frames to the MAC, and the device (CR or SPINE) will forward its packets.
+
+NOTE: Most hosts on the vlan should update their ARP entry for the GW IP as the SPINE sends a gratuitous ARP packet when the interface comes up.  But as mentioned whether or not this happens both the CRs and SPINE are going to forward traffic.
+
+If we have a ping going towards the GW IP we can see it always get's a response, but the local ARP table has changed in the meantime:
+```
+root@server1:~# ip neigh show 10.192.0.1
+10.192.0.1 dev eth1 lladdr 00:00:5e:00:01:0a REACHABLE
+root@server1:~# 
+root@server1:~# ping 10.192.0.1
+PING 10.192.0.1 (10.192.0.1) 56(84) bytes of data.
+64 bytes from 10.192.0.1: icmp_seq=1 ttl=64 time=181 ms
+64 bytes from 10.192.0.1: icmp_seq=2 ttl=64 time=142 ms
+<--- output cut --->
+64 bytes from 10.192.0.1: icmp_seq=18 ttl=64 time=128 ms
+64 bytes from 10.192.0.1: icmp_seq=19 ttl=64 time=201 ms
+^C
+--- 10.192.0.1 ping statistics ---
+19 packets transmitted, 19 received, 0% packet loss, time 18015ms
+rtt min/avg/max/mdev = 102.612/168.930/515.265/93.025 ms
+root@server1:~# ip neigh show 10.192.0.1
+10.192.0.1 dev eth1 lladdr 00:00:5e:44:44:44 REACHABLE
+root@server1:~# 
+```
+
+Traffic to both remote servers still works, but we now see it takes another path out of the network:
+```
+root@server1:~# mtr -n -r -c 3 100.64.100.7
+Start: 2023-09-18T13:16:26+0000
+HOST: server1                     Loss%   Snt   Last   Avg  Best  Wrst StDev
+  1.|-- 10.192.0.5                 0.0%     3  289.4 261.5 206.0 289.4  48.1
+  2.|-- 100.64.100.2               0.0%     3  258.5 238.8 205.7 258.5  28.9
+  3.|-- 100.64.100.7               0.0%     3  126.5 184.2 120.4 305.7 105.3
+```
+```
+root@server1:~# mtr -n -r -c 3 100.64.100.7
+Start: 2023-09-18T13:16:26+0000
+HOST: server1                     Loss%   Snt   Last   Avg  Best  Wrst StDev
+  1.|-- 10.192.0.5                 0.0%     3  289.4 261.5 206.0 289.4  48.1
+  2.|-- 100.64.100.2               0.0%     3  258.5 238.8 205.7 258.5  28.9
+  3.|-- 100.64.100.7               0.0%     3  126.5 184.2 120.4 305.7 105.3
+```
+
+
+#### Step 4 Change VRRP IP addresses on CRs
+
+Next we want to change the VRRP IPs configured on the CRs, to remove the IP conflict on the local LAN.
+
 
 
