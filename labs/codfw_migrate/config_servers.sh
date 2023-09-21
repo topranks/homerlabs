@@ -27,13 +27,13 @@ sudo ip netns exec clab-codfw_migrate-remote1 ip -6 route del default
 sudo ip netns exec clab-codfw_migrate-remote1 ip addr add 100.64.100.5/31 dev eth1
 sudo ip netns exec clab-codfw_migrate-remote1 ip route add default via 100.64.100.4
 sudo ip netns exec clab-codfw_migrate-remote1 ip addr add 2620:0:860:3:fe00::2/64 dev eth1
-#sudo ip netns exec clab-codfw_migrate-remote1 ip -6 route add default via 2620:0:860:3:fe00::1
+sudo ip netns exec clab-codfw_migrate-remote1 ip -6 route add default via 2620:0:860:3:fe00::1
 
 sudo ip netns exec clab-codfw_migrate-remote2 ip route del default
 sudo ip netns exec clab-codfw_migrate-remote2 ip -6 route del default
 sudo ip netns exec clab-codfw_migrate-remote2 ip addr add 100.64.100.7/31 dev eth1
 sudo ip netns exec clab-codfw_migrate-remote2 ip route add default via 100.64.100.6
 sudo ip netns exec clab-codfw_migrate-remote2 ip addr add 2620:0:860:4:fe00::2/64 dev eth1
-#sudo ip netns exec clab-codfw_migrate-remote2 ip -6 route add default via 2620:0:860:4:fe00::1 
+sudo ip netns exec clab-codfw_migrate-remote2 ip -6 route add default via 2620:0:860:4:fe00::1 
 
 
