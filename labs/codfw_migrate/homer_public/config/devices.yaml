@@ -18,6 +18,7 @@ CORE1:
         descr: "ASW xe-0/0/0"
         ipv4: "10.192.0.2/22"
         ipv6: "2620:0:860:101::2/64"
+        route_adver: True
         vrrp:
           group: 10
           ipv4: "10.192.0.1"
@@ -53,6 +54,7 @@ CORE2:
         descr: "ASW xe-0/0/1"
         ipv4: "10.192.0.3/22"
         ipv6: "2620:0:860:101::3/64"
+        route_adver: True
         vrrp:
           group: 10
           ipv4: "10.192.0.1"
