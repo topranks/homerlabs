@@ -15,6 +15,10 @@ codfw_migrate:
     VLAN300:
       id: 300
 
+  anycast_neighbors:
+    server1: 10.192.0.11
+    server2: 10.192.0.12
+
   default_instance: WMF_PROD
   routing_instances:
     WMF_PROD:
