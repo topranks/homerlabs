@@ -17,6 +17,15 @@ sudo ip netns exec clab-codfw_migrate-server2 ip addr add 2620:0:860:101::12/64 
 
 sudo ip netns exec clab-codfw_migrate-server1_b ip route del default
 sudo ip netns exec clab-codfw_migrate-server1_b ip -6 route del default
+sudo ip netns exec clab-codfw_migrate-server1_b ip -6 addr flush dev eth1
+sudo ip netns exec clab-codfw_migrate-server1_b ip link add link eth1 name eth1.100 type vlan id 100
+sudo ip netns exec clab-codfw_migrate-server1_b ip addr add 10.192.0.13/22 dev eth1.100
+sudo ip netns exec clab-codfw_migrate-server1_b ip route add default via 10.192.0.1
+sudo ip netns exec clab-codfw_migrate-server1_b ip link set dev eth1.100 up 
+sudo ip netns exec clab-codfw_migrate-server1_b ip link add link eth1 name eth1.200 type vlan id 200
+sudo ip netns exec clab-codfw_migrate-server1_b ip addr add 192.168.187.13/24 dev eth1.200
+sudo ip netns exec clab-codfw_migrate-server1_b ip link set dev eth2.200 up 
+
 sudo ip netns exec clab-codfw_migrate-server1_b ip addr add 10.192.0.13/22 dev eth1
 sudo ip netns exec clab-codfw_migrate-server1_b ip route add default via 10.192.0.1
 sudo ip netns exec clab-codfw_migrate-server1_b ip addr add 2620:0:860:101::13/64 dev eth1

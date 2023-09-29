@@ -10,7 +10,7 @@ CORE1:
       "ge-0/0/1":
         descr: "SPINE1 xe-0/0/3"
         subints:
-          100:
+          501:
             descr: "SPINE1 WMF_PROD VRF"
             ipv4: "100.64.100.0/31"
             ipv6: "2620:0:860:6:fe00::1/64"
@@ -46,7 +46,7 @@ CORE2:
       "ge-0/0/1":
         descr: "SPINE2 xe-0/0/3"
         subints:
-          100:
+          502:
             descr: "SPINE2 WMF_PROD VRF"
             ipv4: "100.64.100.2/31"
             ipv6: "2620:0:860:7:fe00::1/64"
@@ -74,13 +74,6 @@ SPINE1:
   role: spine
   site: codfw_migrate
   config:
-    ip_ints:
-      "xe-0/0/3":
-        descr: "CORE1 ge-0/0/1"
-        subints:
-          100:
-            ipv4: "100.64.100.1/31"
-            ipv6: "2620:0:860:6:fe00::2/64"
     lags:
       "ae0":
         ports:
@@ -91,16 +84,28 @@ SPINE1:
         "ae0":
           descr: "ASW ae0"
           vlan: VLAN100
+      trunk:
+        "xe-0/0/3":
+          descr: "CORE1 ge-0/0/1"
+          members: ['VLAN100', 'VLAN501']
     vlan_ints:
       VLAN100:
         ipv4: "10.192.0.4/22"
         ipv6: "2620:0:860:101::4/64"
+      VLAN501:
+        ipv4: "100.64.100.1/31"
+        ipv6: "2620:0:860:6:fe00::2/64"
+    vrf_loopbacks:
+      WMF_PROD:
+        ipv4: [10.192.255.16/32]
+        ipv6: [2620:0:860:13f::11/128]
     device_bgp:
       routing_instance:
         WMF_PROD:
           groups:
             CORE_ROUTERS4:
               export: "EXT_OUT"
+              import: "CORE_IN"
               peers:
                 "100.64.100.0":
                   descr: CORE1
@@ -108,6 +113,7 @@ SPINE1:
           v6_groups:
             CORE_ROUTERS6:
               export: "EXT_OUT"
+              import: "CORE_IN"
               peers:
                 "2620:0:860:6:fe00::1":
                   descr: CORE1
@@ -117,13 +123,6 @@ SPINE2:
   role: spine
   site: codfw_migrate
   config:
-    ip_ints:
-      "xe-0/0/3":
-        descr: "CORE2 ge-0/0/1"
-        subints:
-          100:
-            ipv4: "100.64.100.3/31"
-            ipv6: "2620:0:860:7:fe00::2/64"
     lags:
       "ae0":
         ports:
@@ -134,16 +133,28 @@ SPINE2:
         "ae0":
           descr: "ASW ae0"
           vlan: VLAN100
+      trunk:
+        "xe-0/0/3":
+          descr: "CORE2 ge-0/0/1"
+          members: ['VLAN100', 'VLAN502']
     vlan_ints:
       VLAN100:
         ipv4: "10.192.0.5/22"
         ipv6: "2620:0:860:101::5/64"
+      VLAN502:
+        ipv4: "100.64.100.3/31"
+        ipv6: "2620:0:860:7:fe00::2/64"
+    vrf_loopbacks:
+      WMF_PROD:
+        ipv4: [10.192.255.17/32]
+        ipv6: [2620:0:860:13f::12/128]
     device_bgp:
       routing_instance:
         WMF_PROD:
           groups:
             CORE_ROUTERS4:
               export: "EXT_OUT"
+              import: "CORE_IN"
               peers:
                 "100.64.100.2":
                   descr: CORE2
@@ -151,6 +162,7 @@ SPINE2:
           v6_groups:
             CORE_ROUTERS6:
               export: "EXT_OUT"
+              import: "CORE_IN"
               peers:
                 "2620:0:860:7:fe00::1":
                   descr: CORE2
@@ -161,14 +173,22 @@ LEAF1:
   site: codfw_migrate
   config:
     vlan_ports:
-      access:
+      trunk:
+      trunk:
         "xe-0/0/2":
           descr: "SERVER1b eth0"
-          vlan: VLAN100
+          members: ['VLAN100', 'VLAN200', 'VLAN300']
     vlan_ints:
       VLAN100:
         ipv4: "10.192.0.6/22"
         ipv6: "2620:0:860:101::6/64"
+      VLAN200:
+       ipv4: "192.168.187.1/24"
+       ipv6: "2620:0:860:187::1/64"
+    vrf_loopbacks:
+      WMF_PROD:
+        ipv4: [10.192.255.18/32]
+        ipv6: [2620:0:860:13f::12/128]
       
 LEAF2:
   role: leaf
@@ -183,6 +203,10 @@ LEAF2:
       VLAN100:
         ipv4: "10.192.0.7/22"
         ipv6: "2620:0:860:101::7/64"
+    vrf_loopbacks:
+      WMF_PROD:
+        ipv4: [10.192.255.19/32]
+        ipv6: [2620:0:860:13f::13/128]
 
 ASW:
   role: basicsw
