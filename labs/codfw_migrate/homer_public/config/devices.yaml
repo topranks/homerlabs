@@ -104,16 +104,14 @@ SPINE1:
         WMF_PROD:
           groups:
             CORE_ROUTERS4:
-              export: "EXT_OUT"
-              import: "CORE_IN"
+              export: "CORE_EVPN_OUT"
               peers:
                 "100.64.100.0":
                   descr: CORE1
                   peer_as: 14907
           v6_groups:
             CORE_ROUTERS6:
-              export: "EXT_OUT"
-              import: "CORE_IN"
+              export: "CORE_EVPN_OUT"
               peers:
                 "2620:0:860:6:fe00::1":
                   descr: CORE1
@@ -153,16 +151,14 @@ SPINE2:
         WMF_PROD:
           groups:
             CORE_ROUTERS4:
-              export: "EXT_OUT"
-              import: "CORE_IN"
+              export: "CORE_EVPN_OUT"
               peers:
                 "100.64.100.2":
                   descr: CORE2
                   peer_as: 14907
           v6_groups:
             CORE_ROUTERS6:
-              export: "EXT_OUT"
-              import: "CORE_IN"
+              export: "CORE_EVPN_OUT"
               peers:
                 "2620:0:860:7:fe00::1":
                   descr: CORE2
@@ -173,7 +169,6 @@ LEAF1:
   site: codfw_migrate
   config:
     vlan_ports:
-      trunk:
       trunk:
         "xe-0/0/2":
           descr: "SERVER1b eth0"
@@ -189,6 +184,17 @@ LEAF1:
       WMF_PROD:
         ipv4: [10.192.255.18/32]
         ipv6: [2620:0:860:13f::12/128]
+    device_bgp:
+      routing_instance:
+        WMF_PROD:
+          groups:
+            CORE_ROUTERS4:
+              export: "CORE_EVPN_OUT"
+              import: "CORE_IN"
+              peers:
+                "10.192.0.13":
+                  descr: SERVER1B
+                  peer_as: 64600
       
 LEAF2:
   role: leaf
