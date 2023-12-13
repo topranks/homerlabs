@@ -1,0 +1,20 @@
+name: onlinklab
+mgmt:
+  network: onlinklab
+  bridge: clab
+topology:
+  kinds:
+    linux:
+      image: debian:clab
+      binds:
+        - /home/cathal/.ssh/homerlabs_ed25519.pub:/root/.ssh/authorized_keys
+
+  nodes:
+    server1:
+      kind: linux
+    server2:
+      kind: linux
+
+  links:
+    - endpoints: ["server1:eth1", "server2:eth1"]
+
