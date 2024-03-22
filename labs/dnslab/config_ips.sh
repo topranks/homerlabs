@@ -1,8 +1,8 @@
 #!/bin/bash
 set -x
 # Loopbacks
-ip netns exec clab-dnslab-core1 ip addr add 100.64.0.1/32 dev lo
-ip netns exec clab-dnslab-core2 ip addr add 100.64.0.2/32 dev lo
+ip netns exec clab-dnslab-core1 ip addr add 10.10.10.10/32 dev lo
+ip netns exec clab-dnslab-core2 ip addr add 20.20.20.20/32 dev lo
 ip netns exec clab-dnslab-spine1 ip addr add 1.1.1.1/32 dev lo
 ip netns exec clab-dnslab-spine2 ip addr add 2.2.2.2/32 dev lo
 ip netns exec clab-dnslab-leaf1 ip addr add 11.11.11.11/32 dev lo
@@ -42,6 +42,11 @@ ip netns exec clab-dnslab-asw1 ip link set dev br0 up
 ip netns exec clab-dnslab-core1 ip addr add 100.64.0.2/22 dev eth3
 ip netns exec clab-dnslab-core2 ip addr add 100.64.0.3/22 dev eth3
 ip netns exec clab-dnslab-server3 ip addr add 100.64.0.10/22 dev eth1
+
+# routes to core router loopbacks on server3 (as server peers with loopbacks)
+# should really route all to CR1 and have IBGP between CRs to simulate VRRP fully
+ip netns exec clab-dnslab-server3 ip route add 10.10.10.10/32 via 100.64.0.2
+ip netns exec clab-dnslab-server3 ip route add 20.20.20.20/32 via 100.64.0.3
 
 # server anycast IP
 ip netns exec clab-dnslab-server1 ip addr add 192.0.2.1/32 dev lo
