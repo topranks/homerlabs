@@ -1,0 +1,78 @@
+---
+rrlab:
+  bgp:
+    evpn_as: 65187
+
+  vlans:
+    VLAN100:
+      id: 100
+    VLAN200:
+      id: 200
+
+  default_instance: PRODUCTION
+  routing_instances:
+    PRODUCTION:
+      vni: 5000
+
+  devices:
+    SPINE1:
+      role: spine
+      loopback: 1.1.1.1
+    SPINE2:
+      role: spine
+      loopback: 2.2.2.2
+    SPINE3:
+      role: spine
+      loopback: 3.3.3.3
+    SPINE4:
+      role: spine
+      loopback: 4.4.4.4
+    LEAF1:
+      role: leaf
+      loopback: 11.11.11.11
+    LEAF2:
+      role: leaf
+      loopback: 12.12.12.12
+
+  links:
+    - nodes:
+        LEAF1: "xe-0/0/0"
+        SPINE1: "xe-0/0/0"
+      v4_prefix: "10.1.1.0/31"
+
+    - nodes:
+        LEAF1: "xe-0/0/1"
+        SPINE2: "xe-0/0/0"
+      v4_prefix: "10.1.2.0/31"
+
+    - nodes:
+        LEAF2: "xe-0/0/0"
+        SPINE3: "xe-0/0/0"
+      v4_prefix: "10.2.3.0/31"
+
+    - nodes:
+        LEAF2: "xe-0/0/1"
+        SPINE4: "xe-0/0/0"
+      v4_prefix: "10.2.4.0/31"
+
+    - nodes:
+        SPINE1: "xe-0/0/1"
+        SPINE3: "xe-0/0/1"
+      v4_prefix: "10.10.3.0/31"
+
+    - nodes:
+        SPINE1: "xe-0/0/2"
+        SPINE4: "xe-0/0/1"
+      v4_prefix: "10.10.4.0/31"
+
+    - nodes:
+        SPINE2: "xe-0/0/1"
+        SPINE3: "xe-0/0/2"
+      v4_prefix: "10.20.3.0/31"
+
+    - nodes:
+        SPINE2: "xe-0/0/2"
+        SPINE4: "xe-0/0/2"
+      v4_prefix: "10.20.4.0/31"
+
+
