@@ -6,25 +6,25 @@ topology:
   nodes:
     core1:
       kind: vr-vmx
-      image: vrnetlab/vr-vmx:21.2R1.10
+      image: vrnetlab/vr-vmx:latest
     core2:
       kind: vr-vmx
-      image: vrnetlab/vr-vmx:21.2R1.10
+      image: vrnetlab/vr-vmx:latest
     leaf1:
       kind: vr-vqfx
-      image: vrnetlab/vr-vqfx:20.2R1.10
+      image: vrnetlab/vr-vqfx:latest
     leaf2:
       kind: vr-vqfx
-      image: vrnetlab/vr-vqfx:20.2R1.10
+      image: vrnetlab/vr-vqfx:latest
     leaf3:
       kind: vr-vqfx
-      image: vrnetlab/vr-vqfx:20.2R1.10
+      image: vrnetlab/vr-vqfx:latest
     spine1:
       kind: vr-vqfx
-      image: vrnetlab/vr-vqfx:20.2R1.10
+      image: vrnetlab/vr-vqfx:latest
     spine2:
       kind: vr-vqfx
-      image: vrnetlab/vr-vqfx:20.2R1.10
+      image: vrnetlab/vr-vqfx:latest
     server1:
       image: debian:clab
       kind: linux
