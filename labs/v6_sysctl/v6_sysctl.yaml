@@ -1,0 +1,29 @@
+name: v6_sysctl
+mgmt:
+  network: v6_sysctl
+  bridge: clab
+topology:
+  kinds:
+    linux:
+      image: debian:clab
+      binds:
+        - /home/cathal/.ssh/homerlabs_ed25519_root.pub:/root/.ssh/authorized_keys
+
+  nodes:
+    h1:
+      kind: linux
+    h2:
+      kind: linux
+    h3:
+      kind: linux
+    h4:
+      kind: linux
+    r1:
+      kind: linux
+
+  links:
+    - endpoints: ["h1:eth1", "r1:eth1"]
+    - endpoints: ["h2:eth1", "r1:eth2"]
+    - endpoints: ["h3:eth1", "r1:eth3"]
+    - endpoints: ["h4:eth1", "r1:eth4"]
+
