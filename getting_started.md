@@ -18,7 +18,7 @@ Firstly you'll need to have Juniper's [vQFX](https://www.juniper.net/us/en/dm/fr
 
 To run vQFX in containerlab we need to wrap the VM execution in a container that can be run with docker (see [here](https://containerlab.dev/manual/vrnetlab/)).  Once you have the vQFX qemu images you can create this container by using [vrnetlab](https://github.com/vrnetlab/vrnetlab) following the instructions below:
 
-[Juniper vQFX and Containerlab Tutorial](https://www.theasciiconstruct.com/post/junos-vqfx-containerlab/)
+[Juniper vQFX and Containerlab Tutorial](https://web.archive.org/web/20240615175057/https://www.theasciiconstruct.com/post/junos-vqfx-containerlab/)
 
 Once built, the vQFX image should be tagged as vrnetlab/vr-vqfx:latest, which is what the clab topology files reference.  For example:
 
