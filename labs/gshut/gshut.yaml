@@ -1,0 +1,33 @@
+name: gshut
+mgmt:
+  network: gshut
+  bridge: clab
+topology:
+  kinds:
+    crpd:
+      image: "crpd:latest"
+      env:
+        LD_PRELOAD: "/usr/local/lib/libfaketime.so.1"
+        FAKETIME: "@2021-05-05 16:20:00"
+        FAKETIME_DONT_RESET: 1
+      license: /home/cathal/crpd.lic
+      binds:
+        - /home/cathal/.ssh/homerlabs_ed25519.pub:/root/.ssh/authorized_keys
+
+  nodes:
+    r1:
+      kind: crpd
+    r2:
+      kind: crpd
+    r3:
+      kind: crpd
+    r4:
+      kind: crpd
+
+  links:
+    - endpoints: ["r1:eth1", "r2:eth1"]
+    - endpoints: ["r1:eth2", "r3:eth1"]
+    - endpoints: ["r2:eth2", "r3:eth2"]
+    - endpoints: ["r4:eth1", "r2:eth3"]
+    - endpoints: ["r4:eth2", "r3:eth3"]
+

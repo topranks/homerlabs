@@ -1,0 +1,24 @@
+name: wglab
+mgmt:
+  network: wglab
+  bridge: clab
+topology:
+  nodes:
+    s1:
+      image: debian:clab
+      kind: linux
+    r1:
+      image: debian:clab
+      kind: linux
+    s2:
+      image: debian:clab
+      kind: linux
+    s3:
+      image: debian:clab
+      kind: linux
+
+  links:
+    - endpoints: ["s1:eth1", "r1:eth1"]
+    - endpoints: ["s2:eth1", "r1:eth2"]
+    - endpoints: ["s3:eth1", "r1:eth3"]
+
